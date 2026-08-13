@@ -2,6 +2,17 @@
 
 # Windows Server Security Lab
 
+![Windows Server 2025](https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=flat&logo=windows&logoColor=white)
+![Role](https://img.shields.io/badge/Role-Domain%20Controller-2D72D9?style=flat)
+![Services](https://img.shields.io/badge/Services-AD%20DS%20%7C%20DNS-5E5E5E?style=flat)
+![Virtualization](https://img.shields.io/badge/Virtualization-VMware-607078?style=flat&logo=vmware&logoColor=white)
+![Forest](https://img.shields.io/badge/Forest-Single%20Forest-9C27B0?style=flat)
+![OUs](https://img.shields.io/badge/OUs-5-FFB900?style=flat)
+![Users](https://img.shields.io/badge/Users-25-4CAF50?style=flat)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=flat)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)
+![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)
+
 Hands-on laboratory focused on Windows infrastructure administration and security, developed as part of my Information Security studies.
 
 The environment is based on **Windows Server 2025** and Windows client machines joined to a domain. Throughout the laboratory, different components of an enterprise environment are implemented and secured, ranging from Active Directory deployment to security policies, update management, public key infrastructure, vulnerability assessment, and privileged account management.
