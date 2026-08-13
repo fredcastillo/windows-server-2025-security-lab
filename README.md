@@ -3,6 +3,7 @@
 
 <p align="center">
   # Windows Server Security Lab
+  </p>
   
   <a href="https://github.com/fredcastillo/ADDS-Lab">
     <img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows" alt="Windows Server">
