@@ -32,8 +32,9 @@
   </a>
 </p>
 
-Laboratorio práctico enfocado en la administración y seguridad de infraestructura Windows, desarrollado durante mi formación en Seguridad Informática.
+## 📖 Descripción General
 
+Laboratorio práctico enfocado en la administración y seguridad de infraestructura Windows, desarrollado durante mi formación en Seguridad Informática.
 
 El entorno está basado en **Windows Server 2025** y equipos cliente Windows unidos a un dominio. A lo largo del laboratorio se trabajan diferentes componentes de una infraestructura empresarial, desde la implementación de Active Directory hasta la aplicación de políticas de seguridad, gestión de actualizaciones, infraestructura de clave pública, evaluación de vulnerabilidades y administración de cuentas privilegiadas.
 
