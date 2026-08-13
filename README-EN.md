@@ -13,6 +13,8 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)
 ![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)
 
+## Description
+
 Hands-on laboratory focused on Windows infrastructure administration and security, developed as part of my Information Security studies.
 
 The environment is based on **Windows Server 2025** and Windows client machines joined to a domain. Throughout the laboratory, different components of an enterprise environment are implemented and secured, ranging from Active Directory deployment to security policies, update management, public key infrastructure, vulnerability assessment, and privileged account management.
