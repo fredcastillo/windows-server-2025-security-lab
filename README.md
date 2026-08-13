@@ -4,9 +4,6 @@
 <!-- SHIELDS DEL PROYECTO -->
 <p align="center">
   <a href="https://github.com/fredcastillo/ADDS-Lab">
-    <img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge" alt="Estado">
-  </a>
-  <a href="https://github.com/fredcastillo/ADDS-Lab">
     <img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows" alt="Windows Server">
   </a>
   <a href="https://github.com/fredcastillo/ADDS-Lab">
