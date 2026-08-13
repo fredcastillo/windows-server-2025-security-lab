@@ -1,8 +1,9 @@
 🇪🇸 **Español** | 🇬🇧 [English](README-EN.md)
 
-# Windows Server Security Lab
-<!-- SHIELDS DEL PROYECTO -->
+
 <p align="center">
+  # Windows Server Security Lab
+  
   <a href="https://github.com/fredcastillo/ADDS-Lab">
     <img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows" alt="Windows Server">
   </a>
