@@ -39,6 +39,10 @@ En esta práctica se configura desde cero un **Domain Controller** con los servi
 | Virtualización         | VMware Workstation                           |
 | Usuarios               | 25                                           |
 | Unidades Organizativas | 5                                            |
+| Dirección IP           | `192.168.100.147`                            |
+| Máscara de red         | `255.255.255.0`                              |
+| Puerta de enlace       | `192.168.100.1`                              |
+| Dominio                | `fred.castillo`                              |
 
 ## Estructura del laboratorio
 
