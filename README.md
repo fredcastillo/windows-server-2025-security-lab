@@ -3,16 +3,36 @@
 # Windows Server Security Lab
 <!-- SHIELDS DEL PROYECTO -->
 <p align="center">
-  
-![Windows Server 2025](https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=flat&logo=windows&logoColor=white)
-![Active Directory](https://img.shields.io/badge/Active%20Directory-Domain%20Controller-0078D4?style=flat&logo=microsoft&logoColor=white)
-![DNS](https://img.shields.io/badge/DNS-Server-5E5E5E?style=flat&logo=server&logoColor=white)
-![VMware Workstation](https://img.shields.io/badge/VMware-Workstation-607078?style=flat&logo=vmware&logoColor=white)
-![OUs](https://img.shields.io/badge/OUs-5-FFB900?style=flat)
-![Users](https://img.shields.io/badge/Users-25-4CAF50?style=flat)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=flat)
-![Lab](https://img.shields.io/badge/Lab-Seguridad%20Informática-9C27B0?style=flat)
-
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge" alt="Estado">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows" alt="Windows Server">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Rol-Domain%20Controller-2D72D9?style=for-the-badge" alt="Rol">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Servicios-AD%20DS%20%7C%20DNS-5E5E5E?style=for-the-badge" alt="Servicios">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Virtualización-VMware-607078?style=for-the-badge&logo=vmware" alt="VMware">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Bosque-Dominio%20Único-9C27B0?style=for-the-badge" alt="Bosque">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/OUs-5-FFA500?style=for-the-badge" alt="OUs">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab">
+    <img src="https://img.shields.io/badge/Usuarios-25-4CAF50?style=for-the-badge" alt="Usuarios">
+  </a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/Licencia-MIT-yellow?style=for-the-badge" alt="Licencia">
+  </a>
+  <a href="https://www.youtube.com/watch?v=H8pR4lc_Jws">
+    <img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube" alt="Video">
+  </a>
 </p>
 
 Laboratorio práctico enfocado en la administración y seguridad de infraestructura Windows, desarrollado durante mi formación en Seguridad Informática.
