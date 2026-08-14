@@ -2,16 +2,18 @@
 
 # Active Directory Domain Services
 
-![Windows Server 2025](https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=flat&logo=windows&logoColor=white)
-![Role](https://img.shields.io/badge/Role-Domain%20Controller-2D72D9?style=flat)
-![Services](https://img.shields.io/badge/Services-AD%20DS%20%7C%20DNS-5E5E5E?style=flat)
-![Virtualization](https://img.shields.io/badge/Virtualization-VMware-607078?style=flat&logo=vmware&logoColor=white)
-![Forest](https://img.shields.io/badge/Forest-Single%20Forest-9C27B0?style=flat)
-![OUs](https://img.shields.io/badge/OUs-5-FFB900?style=flat)
-![Users](https://img.shields.io/badge/Users-25-4CAF50?style=flat)
-![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=flat)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)
-![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)
+<p align="center">
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows Server"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Rol-Controlador%20de%20Dominio-2D72D9?style=for-the-badge" alt="Rol"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Servicios-AD%20DS%20%7C%20DNS-5E5E5E?style=for-the-badge" alt="Servicios"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Virtualización-VMware-607078?style=for-the-badge&logo=vmware&logoColor=white" alt="Virtualización"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Bosque-Bosque%20Único-9C27B0?style=for-the-badge" alt="Bosque"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/OUs-5-FFA500?style=for-the-badge" alt="OUs"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Usuarios-25-4CAF50?style=for-the-badge" alt="Usuarios"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge" alt="Estado"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab/blob/main/LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-yellow?style=for-the-badge" alt="Licencia"></a>
+  <a href="https://www.youtube.com/watch?v=H8pR4lc_Jws"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
+</p>
 
 ## Descripcion
 
