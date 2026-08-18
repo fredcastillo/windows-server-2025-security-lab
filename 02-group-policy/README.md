@@ -64,6 +64,17 @@ Las políticas se administran de forma centralizada desde el Domain Controller y
 
 ---
 
+## Directivas implementadas
+
+| GPO | Objetivo |
+|---|---|
+| Chrome installer | Distribución automática de Google Chrome |
+| bloqueo administrativo cmd edit | Restricción de herramientas administrativas |
+| NTP | Sincronización de tiempo |
+| auditorías de seguridad | Registro de eventos de seguridad |
+
+---
+
 # 1. Instalación de Google Chrome mediante GPO
 
 El primer objetivo consiste en automatizar la instalación de Google Chrome en los equipos del dominio.
