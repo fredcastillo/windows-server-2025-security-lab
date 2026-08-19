@@ -1,3 +1,5 @@
+🇬🇧 **English** | 🇪🇸 [Español](README.md)
+
 <h1 align="center">Group Policy Objects (GPO) Implementation</h1>
 
 <p align="center">
