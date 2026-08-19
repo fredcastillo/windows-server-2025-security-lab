@@ -1,59 +1,67 @@
-# Instalación y configuración de WSUS
+🇪🇸 **Español** | 🇬🇧 [English](README-EN.md)
 
-Implementación de **Windows Server Update Services (WSUS)** en un entorno de dominio basado en **Windows Server 2025**, como parte del laboratorio de Seguridad de Sistemas Operativos.
+# Instalación y Configuración de WSUS
 
-El objetivo de esta práctica es centralizar la administración de actualizaciones de Windows para los equipos del dominio, utilizando **WSUS + Group Policy** para controlar desde dónde se obtienen las actualizaciones, cuándo se instalan y cómo se notifica al administrador.
+Implementación de **Windows Server Update Services (WSUS)** en Windows Server 2025 para centralizar la administración y distribución de actualizaciones dentro de un entorno de dominio.
+
+Esta práctica forma parte del laboratorio de Seguridad de Sistemas Operativos y utiliza el dominio `fred.castillo` configurado en los módulos anteriores.
+
+El objetivo es establecer un servidor WSUS, configurar los equipos del dominio para utilizarlo mediante **Group Policy** y definir diferentes comportamientos de actualización para equipos cliente y servidores.
 
 ## Objetivo
 
 * Instalar el rol **Windows Server Update Services (WSUS)**.
-* Configurar WSUS en el Domain Controller.
-* Crear y aplicar las GPO necesarias para los equipos del dominio.
-* Configurar la descarga automática de actualizaciones.
-* Establecer la instalación de actualizaciones para las **2:00 AM**.
-* Configurar la notificación al administrador antes de la instalación.
-* Configurar los equipos cliente y servidores para utilizar WSUS.
-* Probar la distribución de actualizaciones desde el servidor hacia los equipos administrados.
+* Configurar WSUS como servidor de actualizaciones del entorno.
+* Seleccionar los productos y clasificaciones que serán sincronizados.
+* Configurar GPOs para dirigir los equipos del dominio hacia el servidor WSUS.
+* Configurar las PCs cliente para descargar e instalar actualizaciones automáticamente a las 2:00 AM.
+* Configurar los servidores para descargar actualizaciones y notificar al administrador antes de su instalación.
+* Aprobar una actualización desde WSUS.
+* Verificar que el equipo cliente recibe la actualización aprobada.
 
 ## Entorno
 
-| Componente                     | Configuración                  |
-| ------------------------------ | ------------------------------ |
-| Sistema operativo del servidor | Windows Server 2025            |
-| Domain Controller              | `192.168.100.147`              |
-| Dominio                        | `fred.castillo`                |
-| Servicio                       | Windows Server Update Services |
-| Clientes                       | Equipos Windows del dominio    |
-| Administración                 | Group Policy                   |
-| Virtualización                 | VMware Workstation             |
-
-El laboratorio utiliza la infraestructura de Active Directory creada en los módulos anteriores.
+| Componente               | Configuración                                         |
+| ------------------------ | ----------------------------------------------------- |
+| Sistema operativo        | Windows Server 2025                                   |
+| Domain Controller / WSUS | `192.168.100.147`                                     |
+| Dominio                  | `fred.castillo`                                       |
+| Servicio                 | Windows Server Update Services                        |
+| Clientes                 | Windows 10/11                                         |
+| Virtualización           | VMware Workstation                                    |
+| Administración           | Server Manager, WSUS Console, Group Policy Management |
 
 ## Arquitectura
 
+El servidor Windows Server 2025 funciona como controlador de dominio y servidor WSUS dentro del laboratorio.
+
 ```text
                          Windows Server 2025
-                              DC01
-                        192.168.100.147
-                              │
-                     ┌────────┴────────┐
-                     │                 │
-              Active Directory        WSUS
-                     │                 │
-                     └────────┬────────┘
-                              │
-                         Group Policy
-                              │
-               ┌──────────────┼──────────────┐
-               │              │              │
-               ▼              ▼              ▼
-        Windows Client 01  Client 02   Windows Server
-               │              │              │
-               └──────────────┴──────────────┘
-                         Windows Updates
+                         DC01 / WSUS Server
+                           192.168.100.147
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │                           │
+              GPO - Clientes              GPO - Servidores
+                    │                           │
+                    ▼                           ▼
+             Windows Client                Windows Server
+                    │                           │
+                    └─────────────┬─────────────┘
+                                  │
+                           Windows Update
+                                  │
+                                  ▼
+                               WSUS
+                                  │
+                           Microsoft Update
 ```
 
-## 1. Instalación del rol WSUS
+Las políticas permiten aplicar diferentes comportamientos de actualización dependiendo del tipo de equipo.
+
+---
+
+# 1. Instalación del rol WSUS
 
 La instalación comienza desde **Server Manager**.
 
@@ -64,184 +72,322 @@ Manage
 └── Add Roles and Features
 ```
 
-Se utiliza una instalación basada en roles o características y se selecciona:
+En la lista de roles se selecciona:
 
 ```text
 Windows Server Update Services
 ```
 
-Durante el asistente se instalan los componentes necesarios para administrar el servicio.
+Se completan los componentes requeridos por WSUS y se continúa con la instalación.
 
-La instalación de WSUS requiere además seleccionar los servicios y componentes asociados al almacenamiento y administración de las actualizaciones.
+Después de finalizar la instalación inicial, Server Manager muestra las tareas de configuración posteriores al despliegue.
 
-## 2. Configuración inicial de WSUS
+---
 
-Después de instalar el rol, se inicia la configuración inicial de WSUS.
+# 2. Configuración posterior a la instalación
 
-Durante esta fase se configuran los parámetros necesarios para que el servidor pueda sincronizar y administrar las actualizaciones disponibles.
+Una vez instalado el rol, se ejecutan las tareas de **Post-Deployment Configuration** requeridas por WSUS.
 
-Entre los elementos principales se encuentran:
+El servidor debe reiniciarse para completar correctamente la instalación.
 
-* Fuente de sincronización.
-* Idiomas de las actualizaciones.
-* Productos.
-* Clasificaciones.
-* Programación de sincronización.
-* Ubicación de almacenamiento de las actualizaciones.
+Después del reinicio se puede abrir la consola:
 
-La configuración utilizada debe mantenerse acorde con el entorno del laboratorio para evitar descargar productos o clasificaciones que no sean necesarios.
+```text
+Server Manager
+└── Tools
+    └── Windows Server Update Services
+```
 
-## 3. Configuración de las actualizaciones
+---
 
-WSUS permite centralizar la selección y distribución de actualizaciones hacia los equipos administrados.
+# 3. Configuración inicial de WSUS
 
-El flujo utilizado en el laboratorio es:
+Al abrir la consola de WSUS por primera vez se ejecuta el asistente de configuración.
+
+El servidor se configura como el **servidor principal de actualizaciones** del laboratorio y obtiene las actualizaciones directamente desde **Microsoft Update**.
+
+## Fuente de sincronización
 
 ```text
 Microsoft Update
-       ↓
+        │
+        ▼
       WSUS
-       ↓
-Aprobación / administración
-       ↓
+        │
+        ▼
 Equipos del dominio
 ```
 
-De esta forma, los equipos cliente dejan de depender directamente de una configuración independiente de Windows Update y pasan a utilizar el servicio centralizado.
+Esto permite centralizar la administración de las actualizaciones antes de distribuirlas a los equipos del entorno.
 
-## 4. Configuración mediante Group Policy
+---
 
-Para que los equipos del dominio utilicen WSUS, se configuran las políticas correspondientes mediante **Group Policy Management**.
+# 4. Productos y clasificaciones
 
-La configuración se realiza desde:
+Para reducir la cantidad de contenido sincronizado, se seleccionan únicamente los productos y tipos de actualización necesarios para el laboratorio.
+
+## Productos
+
+Se desmarcan los productos que no son necesarios y se seleccionan:
+
+* **Windows 10, version 1903 and later**
+* **Windows Server, version 1903 and later**
+
+La versión del sistema utilizada en el entorno se comprueba mediante:
+
+```cmd
+winver
+```
+
+## Clasificaciones
+
+Para esta práctica se seleccionan:
+
+* **Critical Updates**
+* **Security Updates**
+
+Esto permite centrar la sincronización en actualizaciones relacionadas con correcciones críticas y seguridad.
+
+---
+
+# 5. Organización de los equipos
+
+Para administrar diferentes comportamientos de actualización, el laboratorio separa los equipos cliente y los servidores en diferentes ámbitos de administración.
+
+La estructura conceptual es:
 
 ```text
-Computer Configuration
-└── Policies
-    └── Administrative Templates
-        └── Windows Components
-            └── Windows Update
+fred.castillo
+│
+├── Computers / Clientes
+│      └── Windows Client
+│
+└── Servers
+       └── Windows Server
 ```
 
-Las políticas se configuran para indicar a los equipos administrados la ubicación del servidor WSUS.
+Esta separación permite aplicar políticas WSUS diferentes dependiendo del sistema que se esté administrando.
 
-La dirección utilizada dependerá del protocolo y puerto configurados en el servidor. Como ejemplo:
+---
+
+# 6. GPO para equipos cliente
+
+Se crea o configura una GPO específica para las PCs cliente.
+
+La política tiene como objetivo dirigir los equipos hacia el servidor WSUS local.
+
+## Configuración principal
+
+Se establece:
+
+* Dirección del servidor WSUS local.
+* Frecuencia de detección de actualizaciones: **1 hora**.
+* Descarga automática de actualizaciones.
+* Instalación programada para las **2:00 AM**.
+
+El comportamiento esperado es:
 
 ```text
-http://192.168.100.147
+Cliente
+   │
+   ├── Consulta WSUS cada hora
+   │
+   ├── Descarga automáticamente
+   │
+   └── Instala a las 2:00 AM
 ```
 
-> La URL y el puerto exactos deben coincidir con la configuración real del servicio WSUS utilizado en el laboratorio.
+La ruta del servicio de actualización apunta al servidor WSUS del laboratorio.
 
-## 5. Configuración del horario de instalación
+---
 
-Una de las condiciones de la práctica es establecer la instalación automática de actualizaciones a las:
+# 7. GPO para servidores
 
-```text
-02:00 AM
-```
+Los servidores utilizan una política diferente para evitar instalaciones automáticas que puedan provocar reinicios inesperados.
 
-La GPO correspondiente se configura para establecer el comportamiento de instalación automática y el horario definido para el laboratorio.
+La configuración utilizada corresponde al comportamiento:
 
-## 6. Descarga automática y notificación
-
-También se configura una política para que:
-
-1. Las actualizaciones se descarguen automáticamente.
-2. El sistema notifique al administrador.
-3. La instalación se realice de acuerdo con la política establecida.
-
-Esto permite separar la etapa de **descarga** de la etapa de **instalación** y mantener un mayor control sobre el proceso de actualización.
-
-## 7. Aplicación de las políticas
-
-Después de configurar las GPO, los equipos cliente deben actualizar sus políticas.
-
-En el equipo correspondiente se puede utilizar:
-
-```powershell
-gpupdate /force
-```
-
-Después se puede comprobar la aplicación de las políticas mediante:
-
-```powershell
-gpresult /r
-```
-
-o mediante un informe más detallado:
-
-```powershell
-gpresult /h gpresult.html
-```
-
-## 8. Registro del cliente en WSUS
-
-Una vez aplicada la configuración, los equipos cliente deben comenzar a comunicarse con el servidor WSUS.
-
-La validación debe realizarse tanto desde el cliente como desde la consola de administración de WSUS.
-
-Desde el servidor se comprueba que los equipos administrados aparecen dentro de la consola de WSUS y comienzan a reportar su estado.
-
-## 9. Prueba de actualizaciones
-
-Como parte de la práctica se realiza una prueba de distribución de actualizaciones.
+**Descargar automáticamente y notificar al administrador para la instalación.**
 
 El flujo esperado es:
 
 ```text
-WSUS
- ↓
-Detectar actualización
- ↓
-Aprobar / administrar actualización
- ↓
-Cliente recibe la política
- ↓
-Cliente detecta actualización
- ↓
-Descarga
- ↓
-Instalación según política
+Servidor
+   │
+   ├── Detecta actualización
+   │
+   ├── Descarga actualización
+   │
+   └── Notifica al administrador
+             │
+             └── Instalación manual
 ```
 
-La prueba debe permitir comprobar que las actualizaciones pueden ser administradas desde el servidor y entregadas a los equipos del dominio.
+Esta separación permite aplicar una política más controlada a los servidores que a los equipos cliente.
 
-## 10. Validación
+---
 
-La implementación se considera correcta después de comprobar:
+# 8. Aplicación de las políticas
 
-* WSUS instalado correctamente.
-* Servidor WSUS configurado.
-* GPO de Windows Update aplicada.
-* Equipos cliente configurados para utilizar WSUS.
-* Clientes visibles desde la consola de WSUS.
-* Descarga de actualizaciones según la política.
-* Horario de instalación establecido para las 2:00 AM.
-* Notificación al administrador configurada.
-* Distribución de una actualización a los equipos de prueba.
+Una vez configuradas las GPOs, se fuerza su actualización mediante:
 
-## Comandos útiles para la validación
-
-En los clientes:
-
-```powershell
+```cmd
 gpupdate /force
 ```
 
-```powershell
+El comando se utiliza para acelerar la aplicación de las nuevas configuraciones en los equipos del laboratorio.
+
+Para verificar las políticas aplicadas también puede utilizarse:
+
+```cmd
 gpresult /r
 ```
 
-Para revisar información relacionada con el servicio de Windows Update:
+Esto permite comprobar si las GPOs correspondientes al equipo están siendo aplicadas correctamente.
 
-```powershell
-Get-Service wuauserv
+---
+
+# 9. Aprobación de una actualización desde WSUS
+
+Para comprobar el funcionamiento completo del entorno, se realiza una prueba utilizando una actualización disponible en WSUS.
+
+Desde la consola:
+
+```text
+WSUS
+└── All Updates
 ```
 
-También puede utilizarse `rsop.msc` para revisar de forma gráfica las políticas resultantes aplicadas al equipo.
+Se selecciona una actualización disponible, en este caso:
 
-## Evidencia
+**Servicing Stack Update for Windows 10**
+
+Posteriormente:
+
+```text
+Right Click
+└── Approve
+```
+
+La actualización se aprueba para el grupo de equipos utilizado durante la prueba.
+
+En el laboratorio se utiliza:
+
+```text
+Unassigned Computers
+```
+
+como grupo de prueba.
+
+El flujo queda:
+
+```text
+Microsoft Update
+       │
+       ▼
+      WSUS
+       │
+       │ Update available
+       ▼
+  Administrator
+       │
+       │ Approve
+       ▼
+Computer Group
+       │
+       ▼
+Windows Client
+```
+
+---
+
+# 10. Validación desde el equipo cliente
+
+Después de aplicar las políticas y aprobar la actualización, se realiza la comprobación desde el equipo cliente.
+
+Se abre:
+
+```text
+Settings
+└── Windows Update
+```
+
+El sistema muestra el mensaje indicando que:
+
+> La organización administra algunos valores de configuración.
+
+Este mensaje sirve como indicio de que determinadas configuraciones están siendo administradas mediante políticas.
+
+Posteriormente se selecciona:
+
+**Buscar actualizaciones**
+
+El cliente detecta la actualización previamente aprobada desde WSUS y comienza el proceso de descarga.
+
+La actualización utilizada durante la demostración es:
+
+**Servicing Stack Update for Windows 10**
+
+Esto permite comprobar el flujo completo:
+
+```text
+WSUS
+  ↓
+Aprobación
+  ↓
+GPO
+  ↓
+Cliente
+  ↓
+Detección
+  ↓
+Descarga
+```
+
+---
+
+# 11. Resultado
+
+Al finalizar la práctica se dispone de un sistema centralizado de administración de actualizaciones.
+
+```text
+                        Microsoft Update
+                               │
+                               ▼
+                         Windows Server
+                              WSUS
+                               │
+                    ┌──────────┴──────────┐
+                    │                     │
+               GPO Clientes         GPO Servidores
+                    │                     │
+                    ▼                     ▼
+              Windows Client        Windows Server
+                    │                     │
+              Instalar 2:00 AM      Descargar +
+                                    Notificar
+```
+
+La prueba de aprobación de una actualización demuestra que el cliente puede recibir contenido administrado por WSUS en lugar de depender únicamente de una administración local de Windows Update.
+
+---
+
+# Validación
+
+| Elemento          | Validación                                |
+| ----------------- | ----------------------------------------- |
+| WSUS              | Consola instalada y configurada           |
+| Productos         | Windows 10 y Windows Server seleccionados |
+| Clasificaciones   | Critical Updates y Security Updates       |
+| GPO de clientes   | Servidor WSUS + instalación programada    |
+| GPO de servidores | Descarga y notificación                   |
+| Aplicación de GPO | `gpupdate /force` / `gpresult /r`         |
+| Actualización     | Aprobada desde WSUS                       |
+| Cliente           | Actualización detectada y descargada      |
+
+---
+
+# Evidencia
 
 Las capturas de esta práctica se almacenan en:
 
@@ -249,34 +395,54 @@ Las capturas de esta práctica se almacenan en:
 screenshots/
 ```
 
-La evidencia debe mostrar tanto la configuración del servidor como la aplicación y validación desde los equipos cliente.
+La evidencia incluye:
+
+* Instalación del rol WSUS.
+* Configuración inicial.
+* Productos y clasificaciones.
+* Configuración de GPOs.
+* Aprobación de actualizaciones.
+* Validación desde el equipo cliente.
 
 ## Video
 
 **Demostración de la práctica:**
 [Ver video en YouTube](https://www.youtube.com/watch?v=QQKFb57v7rY)
 
-## Resultado
-
-Al finalizar la práctica, el entorno dispone de un servicio centralizado para la administración de actualizaciones de Windows.
-
-La combinación de **WSUS + Group Policy + Active Directory** permite controlar desde un punto central el origen de las actualizaciones y establecer políticas comunes para los equipos del dominio.
+---
 
 ## Lo aprendido
 
-Esta práctica permitió trabajar con **Patch Management** en un entorno Windows empresarial y comprender la relación entre WSUS, Active Directory y Group Policy.
+Esta práctica permitió trabajar con **WSUS como mecanismo centralizado de administración de actualizaciones** dentro de un dominio Windows.
 
-Además de instalar el servicio, se trabajó con la configuración centralizada de los clientes, la programación de instalaciones y la validación de la comunicación entre el servidor y los equipos administrados.
+Se trabajó con la instalación y configuración del servicio, selección de productos y clasificaciones, integración con Group Policy y diferenciación del comportamiento de actualización entre clientes y servidores.
+
+También se comprobó el flujo completo de una actualización:
+
+```text
+Sincronización
+      ↓
+Selección
+      ↓
+Aprobación
+      ↓
+Aplicación de GPO
+      ↓
+Detección por el cliente
+      ↓
+Descarga
+      ↓
+Instalación
+```
 
 ---
 
-#### Autor
+## 👨‍💻 Autor
 
-**Fred Castillo**
-*Estudiante de Tecnólogo en Seguridad Informática*
-*Aspirante a Red Team | Seguridad Ofensiva*
+**Fred Castillo**  
+**Estudiante de tecnologo en Seguridad Informática**  
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Fred%20Castillo-0077B5?style=for-the-badge\&logo=linkedin)](https://www.linkedin.com/in/fredcastillo11/)
-[![GitHub](https://img.shields.io/badge/GitHub-fredcastillo-100000?style=for-the-badge\&logo=github)](https://github.com/fredcastillo)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Fred%20Castillo-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/fredcastillo11/)
+[![GitHub](https://img.shields.io/badge/GitHub-fredcastillo-100000?style=for-the-badge&logo=github)](https://github.com/fredcastillo)
 
 ---
