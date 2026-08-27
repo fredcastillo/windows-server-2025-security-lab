@@ -9,7 +9,6 @@
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Productos-Windows%2010%20%7C%20Windows%20Server-4CAF50?style=for-the-badge" alt="Productos"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Clasificaciones-Críticas%20y%20de%20Seguridad-FF6F00?style=for-the-badge" alt="Clasificaciones"></a>
  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Aprobación%20de%20Actualización-Servicing%20Stack%20Update-FFA500?style=for-the-badge" alt="Aprobación de Actualización"></a>
-  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge" alt="Estado"></a>
   <a href="https://www.youtube.com/watch?v=QQKFb57v7rY"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
 </p>
 
