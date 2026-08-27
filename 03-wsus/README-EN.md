@@ -8,13 +8,14 @@
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Service-Windows%20Server%20Update%20Services-5E5E5E?style=for-the-badge" alt="WSUS"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Products-Windows%2010%20%7C%20Windows%20Server-4CAF50?style=for-the-badge" alt="Products"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Classifications-Critical%20%26%20Security%20Updates-FF6F00?style=for-the-badge" alt="Classifications"></a>
-  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/GPO%20Clients-Auto%20Install%20at%202%3A00%20AM-0078D4?style=for-the-badge" alt="Client GPO"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/GPO%20Servers-Download%20%26%20Notify-9C27B0?style=for-the-badge" alt="Server GPO"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Update%20Approval-Servicing%20Stack%20Update-FFA500?style=for-the-badge" alt="Update Approval"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge" alt="Status"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"></a>
   <a href="https://www.youtube.com/watch?v=QQKFb57v7rY"><img src="https://img.shields.io/badge/Demo%20Video-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Demo Video"></a>
 </p>
+
+## Description
 
 Implementation of **Windows Server Update Services (WSUS)** on Windows Server 2025 to centrally manage and distribute updates within a Windows domain environment.
 
