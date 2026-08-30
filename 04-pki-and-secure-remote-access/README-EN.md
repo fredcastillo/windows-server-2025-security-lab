@@ -1,6 +1,19 @@
 🇬🇧 **English** | 🇪🇸 [Español](README.md)
 
-# PKI and Secure Remote Access
+<h1 align="center">PKI and Secure Remote Access</h1>
+
+<p align="center">
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows Server"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Ubuntu-Server-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" alt="Ubuntu"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/SSH-Port%202275-000000?style=for-the-badge&logo=openssh&logoColor=white" alt="SSH"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/PKI-AD%20Certificate%20Services-2D72D9?style=for-the-badge" alt="PKI"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Certificate-Exportable%20%28PFX%29-9C27B0?style=for-the-badge" alt="Certificate"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/RDP-Secure%20Connection-4CAF50?style=for-the-badge" alt="RDP"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge" alt="Status"></a>
+  <a href="https://www.youtube.com/watch?v=UHC0T9EKoEw"><img src="https://img.shields.io/badge/Demo%20Video-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Demo Video"></a>
+</p>
+
+## Description
 
 Hands-on laboratory covering **SSH public-key authentication** and **Public Key Infrastructure (PKI)** in a Windows Server 2025 environment.
 
