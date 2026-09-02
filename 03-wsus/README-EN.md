@@ -17,68 +17,72 @@
 
 ## Description
 
-Implementation of **Windows Server Update Services (WSUS)** on Windows Server 2025 to centrally manage and distribute updates within a Windows domain environment.
+Hands-on laboratory covering the implementation of **Windows Server Update Services (WSUS)** to centrally manage and distribute updates in a Windows domain environment.
 
-This laboratory is part of the Operating Systems Security project and builds on the `fred.castillo` domain configured in the previous modules.
+The laboratory demonstrates how to install and configure WSUS on Windows Server, select the products and update classifications to synchronize, configure domain computers through **Group Policy**, and control Windows Update behavior on clients and servers.
 
-The objective is to deploy a WSUS server, configure domain computers to use it through **Group Policy**, and apply different update behaviors to client computers and servers.
+The laboratory also includes a test where an update is approved through WSUS and detected by a client computer.
 
-## Objective
+## Objectives
 
-* Install the **Windows Server Update Services (WSUS)** role.
-* Configure WSUS as the update management server for the environment.
-* Select the products and update classifications to synchronize.
-* Configure GPOs to direct domain computers to the WSUS server.
-* Configure client PCs to automatically download and install updates at 2:00 AM.
-* Configure servers to download updates and notify the administrator before installation.
-* Approve an update through WSUS.
-* Verify that the client receives the approved update.
+* Install the WSUS role.
+* Configure synchronization with Microsoft Update.
+* Select Windows products to manage.
+* Select update classifications.
+* Create and configure a client WSUS GPO.
+* Configure automatic update installation on clients.
+* Schedule client update installation.
+* Configure servers to download updates and notify the administrator.
+* Verify applied policies using `gpresult`.
+* Approve an update from WSUS.
+* Verify that the client detects the update from the WSUS server.
 
 ## Environment
 
-| Component                | Configuration                                         |
-| ------------------------ | ----------------------------------------------------- |
-| Operating System         | Windows Server 2025                                   |
-| Domain Controller / WSUS | `192.168.100.147`                                     |
-| Domain                   | `fred.castillo`                                       |
-| Service                  | Windows Server Update Services                        |
-| Clients                  | Windows 10/11                                         |
-| Virtualization           | VMware Workstation                                    |
-| Management               | Server Manager, WSUS Console, Group Policy Management |
+| Component      | Configuration                  |
+| -------------- | ------------------------------ |
+| Windows Server | Windows Server 2025            |
+| Service        | Windows Server Update Services |
+| Management     | Group Policy                   |
+| Client         | Windows 10/11                  |
+| Virtualization | VMware Workstation             |
+| Domain         | `fred.castillo`                |
 
 ## Architecture
 
-The Windows Server 2025 system acts as both the Domain Controller and WSUS server in the laboratory.
+![Laboratory architecture](diagrams/diagram.png)
 
 ```text
                          Windows Server 2025
-                         DC01 / WSUS Server
-                           192.168.100.147
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-              Client GPO                  Server GPO
-                    │                           │
-                    ▼                           ▼
-             Windows Client                Windows Server
-                    │                           │
-                    └─────────────┬─────────────┘
-                                  │
-                           Windows Update
-                                  │
-                                  ▼
-                               WSUS
-                                  │
-                           Microsoft Update
+                               │
+                               │ WSUS
+                               ▼
+                    Windows Server Update
+                         Services
+                               │
+                ┌──────────────┴──────────────┐
+                │                             │
+                ▼                             ▼
+          Client Computers              Server Computers
+                │                             │
+                │ GPO                         │ GPO
+                ▼                             ▼
+        Auto Download/Install          Download + Notify
+        Scheduled: 2:00 AM                Administrator
+                │
+                ▼
+         Windows Update
 ```
 
-The policies apply different update behaviors depending on the type of system being managed.
+# Part 1 — WSUS Installation
 
----
+## 1. Install the WSUS Role
 
-# 1. Installing the WSUS Role
+On Windows Server, open:
 
-The installation starts from **Server Manager**.
+```text
+Server Manager
+```
 
 Select:
 
@@ -87,25 +91,27 @@ Manage
 └── Add Roles and Features
 ```
 
-From the available server roles, select:
+Use a role-based or feature-based installation.
+
+Select:
 
 ```text
 Windows Server Update Services
 ```
 
-Complete the required WSUS components and continue with the installation.
+Complete the installation wizard and allow Windows Server to install the required components.
 
-After the initial installation is completed, Server Manager displays the required post-deployment configuration tasks.
+After installation, complete the WSUS post-deployment configuration and restart the server if required.
+
+![WSUS role installed](screenshots/01-wsus-role-installed.png)
 
 ---
 
-# 2. Post-Installation Configuration
+# Part 2 — Initial WSUS Configuration
 
-After installing the role, complete the required **Post-Deployment Configuration** tasks.
+## 2. Open the WSUS Console
 
-The server must be restarted to complete the installation successfully.
-
-After the restart, open:
+After the role is installed, open:
 
 ```text
 Server Manager
@@ -113,340 +119,250 @@ Server Manager
     └── Windows Server Update Services
 ```
 
----
+The initial WSUS configuration is performed from this console.
 
-# 3. Initial WSUS Configuration
-
-When the WSUS console is opened for the first time, the configuration wizard is launched.
-
-The server is configured as the **primary update server** for the laboratory and synchronizes directly from **Microsoft Update**.
-
-## Synchronization Source
+Synchronization is configured to use:
 
 ```text
 Microsoft Update
-        │
-        ▼
-      WSUS
-        │
-        ▼
-Domain Computers
 ```
 
-This allows updates to be centrally managed before being distributed to systems in the environment.
+as the update source.
+
+![WSUS console](screenshots/02-wsus-console.png)
 
 ---
 
-# 4. Products and Classifications
+## 3. Select Products
 
-To reduce unnecessary synchronization, only the products and update types required for the laboratory are selected.
+During WSUS configuration, select the Microsoft products that will be managed.
 
-## Products
-
-Unnecessary default products are disabled and the following products are selected:
-
-* **Windows 10, version 1903 and later**
-* **Windows Server, version 1903 and later**
-
-The operating system version is checked using:
-
-```cmd
-winver
-```
-
-## Classifications
-
-The following classifications are selected:
-
-* **Critical Updates**
-* **Security Updates**
-
-This limits synchronization to update categories relevant to critical fixes and security.
-
----
-
-# 5. Computer Organization
-
-To apply different update behaviors, client computers and servers are managed separately.
-
-Conceptually:
+This laboratory includes:
 
 ```text
-fred.castillo
-│
-├── Computers / Clients
-│      └── Windows Client
-│
-└── Servers
-       └── Windows Server
+Windows 10 version 1903 and later
+Windows Server version 1903 and later
 ```
 
-This separation allows different WSUS policies to be applied depending on the system being managed.
+Selecting only the required products helps limit the updates synchronized by the WSUS server.
+
+![Selected WSUS products](screenshots/03-wsus-products.png)
 
 ---
 
-# 6. Client GPO
+## 4. Select Update Classifications
 
-A dedicated GPO is configured for client PCs.
+WSUS allows administrators to select which types of updates should be synchronized.
 
-The policy directs the client systems to the local WSUS server.
-
-## Main configuration
-
-The policy specifies:
-
-* Local WSUS server address.
-* Detection frequency: **every hour**.
-* Automatic download of updates.
-* Scheduled installation at **2:00 AM**.
-
-Expected behavior:
+This laboratory uses:
 
 ```text
-Client
-   │
-   ├── Checks WSUS every hour
-   │
-   ├── Downloads automatically
-   │
-   └── Installs at 2:00 AM
+Critical Updates
+Security Updates
 ```
 
-The update service configuration points to the WSUS server used in the laboratory.
+This focuses synchronization on critical fixes and security-related updates.
+
+![WSUS update classifications](screenshots/04-wsus-classifications.png)
 
 ---
 
-# 7. Server GPO
+# Part 3 — Configure Computers through Group Policy
 
-Servers use a different policy to avoid automatic installations that could cause unexpected restarts.
+## 5. Configure the Client WSUS GPO
 
-The configured behavior is:
+To make domain computers use the internal WSUS server instead of communicating directly with Microsoft Update, configure a Group Policy Object.
 
-**Automatically download updates and notify the administrator for installation.**
-
-Expected behavior:
+The relevant settings are located under:
 
 ```text
-Server
-   │
-   ├── Detects update
-   │
-   ├── Downloads update
-   │
-   └── Notifies administrator
-             │
-             └── Manual installation
+Computer Configuration
+└── Policies
+    └── Administrative Templates
+        └── Windows Components
+            └── Windows Update
 ```
 
-This provides a more controlled update process for server systems.
+Configure Windows Update to use the internal WSUS server.
+
+A detection interval of:
+
+```text
+1 hour
+```
+
+is also configured so that clients periodically check for approved updates.
+
+![Client WSUS GPO](screenshots/05-client-wsus-gpo.png)
 
 ---
 
-# 8. Applying the GPOs
+## 6. Schedule Client Updates
 
-After creating and configuring the GPOs, policy processing is forced with:
+Client computers are configured to automatically download and install updates.
 
-```cmd
+The configuration uses:
+
+```text
+Automatic Download and Scheduled Install
+```
+
+with a scheduled installation time of:
+
+```text
+2:00 AM
+```
+
+This allows approved updates to be downloaded and installed automatically according to the configured policy.
+
+![Client scheduled updates](screenshots/06-client-scheduled-updates.png)
+
+---
+
+# Part 4 — Configure Servers
+
+## 7. Configure the Server Update Policy
+
+Servers use a different update policy from client computers.
+
+The server configuration is:
+
+```text
+Automatic download
+        +
+Notify the administrator
+```
+
+before installation.
+
+The configuration is performed through Group Policy under the Windows Update policies.
+
+![Server update policy](screenshots/07-server-update-policy.png)
+
+This allows different update behavior to be applied according to the system role.
+
+---
+
+# Part 5 — Apply and Verify the Policies
+
+## 8. Refresh Group Policy
+
+On the client, force a Group Policy update:
+
+```powershell
 gpupdate /force
 ```
 
-The command is used to accelerate the application of the new configurations on the laboratory systems.
+Then verify the applied policies with:
 
-The applied policies can also be checked with:
-
-```cmd
+```powershell
 gpresult /r
 ```
 
+![Applied Group Policy results](screenshots/08-gpresult.png)
+
+This verifies that the WSUS-related Group Policy was received by the client.
+
 ---
 
-# 9. Approving an Update from WSUS
+# Part 6 — Approve and Test an Update
 
-To verify the complete update workflow, an available update is approved from the WSUS console.
+## 9. Approve an Update in WSUS
 
-Navigate to:
+From the WSUS console, locate an available update.
 
-```text
-WSUS
-└── All Updates
-```
-
-An available update is selected:
-
-**Servicing Stack Update for Windows 10**
-
-Then:
+The laboratory uses:
 
 ```text
-Right Click
-└── Approve
+Servicing Stack Update for Windows 10
 ```
 
-The update is approved for the computer group used during testing:
+The update is approved for:
 
 ```text
 Unassigned Computers
 ```
 
-The workflow becomes:
+After approval, WSUS can offer the update to applicable computers.
 
-```text
-Microsoft Update
-       │
-       ▼
-      WSUS
-       │
-       │ Update available
-       ▼
-  Administrator
-       │
-       │ Approve
-       ▼
-Computer Group
-       │
-       ▼
-Windows Client
-```
+![Approved update in WSUS](screenshots/09-update-approved.png)
 
 ---
 
-# 10. Client Validation
+## 10. Verify Update Detection on the Client
 
-After the policies are applied and the update is approved, validation is performed from the Windows client.
+On the client computer, open Windows Update.
 
-Open:
+After the client performs its detection cycle, Windows should indicate that update settings are managed by the organization.
 
-```text
-Settings
-└── Windows Update
-```
-
-The client displays a message indicating that:
-
-> Some settings are managed by your organization.
-
-This provides an indication that Windows Update settings are being managed through policy.
-
-The client then selects:
-
-**Check for updates**
-
-The client detects the update previously approved through WSUS and begins downloading it.
-
-The update used in the demonstration is:
-
-**Servicing Stack Update for Windows 10**
-
-This verifies the complete workflow:
+This confirms the following workflow:
 
 ```text
 WSUS
-  ↓
-Approval
-  ↓
-GPO
-  ↓
-Client
-  ↓
-Detection
-  ↓
-Download
+ │
+ │ Approved update
+ ▼
+Windows Client
+ │
+ │ Detection
+ ▼
+Windows Update
+ │
+ ▼
+Available update
 ```
 
 ---
 
-# 11. Result
+# Applied Configuration
 
-At the end of the laboratory, the environment has a centralized update management system.
-
-```text
-                        Microsoft Update
-                               │
-                               ▼
-                         Windows Server
-                              WSUS
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
-               Client GPO           Server GPO
-                    │                     │
-                    ▼                     ▼
-              Windows Client        Windows Server
-                    │                     │
-              Install 2:00 AM      Download +
-                                    Notify
-```
-
-The update approval test confirms that the client can receive content managed through WSUS.
+| Configuration          | Value                                   |
+| ---------------------- | --------------------------------------- |
+| Update source          | Microsoft Update                        |
+| Products               | Windows 10 1903+ / Windows Server 1903+ |
+| Classifications        | Critical Updates / Security Updates     |
+| Client detection       | Every 1 hour                            |
+| Client installation    | Automatic                               |
+| Scheduled installation | 2:00 AM                                 |
+| Server behavior        | Download and notify administrator       |
+| Test                   | Update approved through WSUS            |
 
 ---
 
 # Validation
 
-| Component       | Validation                             |
-| --------------- | -------------------------------------- |
-| WSUS            | Console installed and configured       |
-| Products        | Windows 10 and Windows Server selected |
-| Classifications | Critical Updates and Security Updates  |
-| Client GPO      | WSUS server + scheduled installation   |
-| Server GPO      | Download and notification              |
-| GPO application | `gpupdate /force` / `gpresult /r`      |
-| Update          | Approved through WSUS                  |
-| Client          | Update detected and downloaded         |
+The implementation verified:
+
+```text
+✓ WSUS installed
+✓ WSUS console configured
+✓ Products selected
+✓ Update classifications selected
+✓ Client WSUS GPO configured
+✓ Client installation scheduled for 2:00 AM
+✓ Server update policy configured
+✓ Policies applied to the client
+✓ Update approved through WSUS
+✓ Client configured to use WSUS
+```
 
 ---
 
-# Evidence
+# Result
 
-Screenshots for this laboratory are stored in:
+WSUS was configured as the centralized update management point for the laboratory environment.
 
-```text
-screenshots/
-```
+Client computers receive a Group Policy configuration instructing them to use the WSUS server, periodically detect updates, and automatically install approved updates at **2:00 AM**.
 
-Evidence includes:
+Servers use a separate policy that allows updates to be downloaded while notifying the administrator before installation.
 
-* WSUS role installation.
-* Initial WSUS configuration.
-* Products and classifications.
-* GPO configuration.
-* Update approval.
-* Client-side validation.
+Approving an update through the WSUS console allowed the complete workflow between the WSUS server and the client computer to be validated.
 
 ## Video
 
-**Lab demonstration:**
-[Watch the video on YouTube](https://www.youtube.com/watch?v=QQKFb57v7rY)
+[Watch the laboratory demonstration on YouTube](https://www.youtube.com/watch?v=QQKFb57v7rY)
 
 ---
-
-## What I Learned
-
-This laboratory provided hands-on experience with **WSUS as a centralized update management solution** within a Windows domain environment.
-
-The lab covered service installation and configuration, product and classification selection, Group Policy integration, and different update behaviors for client computers and servers.
-
-It also demonstrated the complete update workflow:
-
-```text
-Synchronization
-      ↓
-Selection
-      ↓
-Approval
-      ↓
-GPO Application
-      ↓
-Client Detection
-      ↓
-Download
-      ↓
-Installation
-```
-
----
-
-
 
 ## 👨‍💻 Author
 
