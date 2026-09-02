@@ -54,8 +54,11 @@ The laboratory is divided into two parts:
 | SSH Port        | `2275`                                |
 
 ## Architecture
+---
 
-![Laboratory architecture](diagrams/diagram.png)
+![Laboratory architecture](diagrams/diagram.jpg)
+
+---
 
 ```text
                            Windows Server 2025
@@ -84,6 +87,7 @@ Client / SSH Key
         ▼
   Ubuntu Server
 ```
+---
 
 ## Part 1 — SSH Public Key Authentication
 
