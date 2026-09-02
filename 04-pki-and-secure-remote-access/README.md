@@ -55,7 +55,7 @@ La práctica está dividida en dos partes:
 
 ## Arquitectura
 
-![Arquitectura del laboratorio](diagrams/diagram.png)
+![Arquitectura del laboratorio](diagrams/diagram.jpg)
 
 ```text
                            Windows Server 2025
