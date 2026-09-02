@@ -33,9 +33,8 @@ This repository documents the practical exercises I have completed, including co
 | 03 | [WSUS](./03-wsus/)                                                     | Update management, GPO configuration, client systems      |
 | 04 | [PKI & Secure Remote Access](./04-pki-and-secure-remote-access/)       | CA, certificates, SSH public-key authentication           |
 | 05 | [Vulnerability Assessment](./05-vulnerability-assessment/)             | Nessus, vulnerability scanning, risk analysis             |
-| 06 | [Vulnerability Remediation](./06-vulnerability-remediation/)           | Remediation, validation, results comparison               |
-| 07 | [Microsoft LAPS](./07-laps/)                                           | Local administrator passwords, expiration, access control |
-| 08 | [Local Administrator Management](./08-local-administrator-management/) | Local accounts, domain groups, administrative privileges  |
+| 06 | [Microsoft LAPS](./07-laps/)                                           | Local administrator passwords, expiration, access control |
+| 07 | [Local Administrator Management](./08-local-administrator-management/) | Local accounts, domain groups, administrative privileges  |
 
 ## Environment
 
@@ -109,13 +108,10 @@ windows-server-security-lab/
 ├── 05-vulnerability-assessment/
 │   └── README.md
 │
-├── 06-vulnerability-remediation/
+├── 06-laps/
 │   └── README.md
 │
-├── 07-laps/
-│   └── README.md
-│
-└── 08-local-administrator-management/
+└── 07-local-administrator-management/
     └── README.md
 ```
 
