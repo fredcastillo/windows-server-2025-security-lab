@@ -553,7 +553,7 @@ Do not commit any of the following to the repository:
 ---
 
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Fred Castillo**  
 *Information Security Technology Student*
