@@ -385,10 +385,10 @@ Complete laboratory demonstration:
 
 ## 👨‍💻 Autor
 
-**Fred Castillo**
+**Fred Castillo**  
 *Information Security Technology Student*
-*Aspiring Red Team | Offensive Security*
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Fred%20Castillo-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/fredcastillo11/)
 [![GitHub](https://img.shields.io/badge/GitHub-fredcastillo-100000?style=for-the-badge&logo=github)](https://github.com/fredcastillo)
 
+---
