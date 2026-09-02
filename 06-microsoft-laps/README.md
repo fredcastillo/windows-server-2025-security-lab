@@ -126,7 +126,7 @@ Set-LapsADReadPasswordPermission `
     -AllowedPrincipals "IT Support"
 ```
 
-![LAPS Active Directory permissions](screenshots/01-update-laps-schema.png)
+![LAPS Active Directory permissions](screenshots/01-update-laps-schema-1.png)
 
 Con esto se establecen dos permisos diferentes:
 
