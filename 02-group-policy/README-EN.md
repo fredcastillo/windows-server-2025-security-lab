@@ -17,22 +17,22 @@
 
 ## Description
 
-Implementation and validation of **Group Policy Objects (GPOs)** in a domain environment based on **Windows Server 2025**, as part of the Operating Systems Security laboratory.
+Implementation and deployment of **Group Policy Objects (GPOs)** in a **Windows Server 2025** domain environment as part of the Operating Systems Security laboratory.
 
-This lab uses Group Policy to automate software deployment, restrict access to administrative tools, configure time synchronization, and enable security auditing policies across domain-joined systems.
+The practice uses Group Policy to automate software installation, restrict administrative tools, configure time synchronization, and enable security auditing policies on domain computers.
 
 ## Objective
 
 Implement and validate the following policies:
 
-* Automated installation of **Google Chrome** through GPO.
+* Automated **Google Chrome** installation through GPO.
 * Restrict access to **Control Panel**.
-* Restrict access to **Command Prompt (CMD)**.
-* Restrict access to **Registry Editor (Regedit)**.
-* Configure time synchronization using the **Domain Controller**.
+* Restrict access to **CMD**.
+* Restrict access to **Regedit**.
+* Configure time synchronization through the **Domain Controller**.
 * Audit logon events.
-* Audit security-related events.
-* Audit process creation and process tracking.
+* Audit security events.
+* Audit process creation and tracking.
 
 ## Environment
 
@@ -44,11 +44,11 @@ Implement and validate the following policies:
 | Client                  | Windows 10/11                   |
 | Management tool         | Group Policy Management         |
 | Virtualization          | VMware Workstation              |
-| Deployed software       | Google Chrome Enterprise `.msi` |
+| Software deployed       | Google Chrome Enterprise `.msi` |
 
 ## Scenario
 
-The lab is built on top of the domain configured in the previous module:
+The laboratory builds on the domain environment configured in the previous module:
 
 ```text
 fred.castillo
@@ -60,21 +60,32 @@ fred.castillo
        └── Windows Client
 ```
 
-Policies are centrally managed from the Domain Controller and validated on the client machine.
+Policies are centrally managed from the Domain Controller and then validated on the client computer.
 
 ---
 
-# 1. Deploying Google Chrome through GPO
+## Implemented Policies
 
-The first objective is to automate the installation of Google Chrome on domain computers.
+| GPO                             | Purpose                            |
+| ------------------------------- | ---------------------------------- |
+| Chrome installer                | Automatic Google Chrome deployment |
+| bloqueo administrativo cmd edit | Administrative tool restrictions   |
+| NTP                             | Time synchronization               |
+| auditorías de seguridad         | Security event logging             |
 
-## 1.1 Preparing the installer
+---
 
-A **Google Chrome Standalone Enterprise** package in `.msi` format is used.
+# 1. Deploy Google Chrome through GPO
 
-The installer is placed in a shared folder on the server so that client computers can access it over the network.
+The first objective is to automate Google Chrome installation on domain computers.
 
-The deployment path should use a **UNC network path**, for example:
+## 1.1 Prepare the Installer
+
+A **Google Chrome Standalone Enterprise** `.msi` package is used.
+
+The installer is placed in a shared folder on the server so that client computers can access the package over the network.
+
+The deployment uses a UNC path, for example:
 
 ```text
 \\DC01\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
@@ -82,7 +93,7 @@ The deployment path should use a **UNC network path**, for example:
 
 > The exact path may vary depending on the laboratory configuration.
 
-## 1.2 Creating the GPO
+## 1.2 Create the GPO
 
 From the Domain Controller, open:
 
@@ -105,35 +116,39 @@ Computer Configuration
         └── Software Installation
 ```
 
-Add the `.msi` package using the corresponding network path.
+Add the `.msi` package using the appropriate network path.
 
-The package is configured as:
+Configure the package as:
 
 ```text
 Assigned
 ```
 
-This allows the software deployment to be managed centrally through Group Policy.
+This allows the installation to be managed through Group Policy.
 
-## 1.3 Updating Group Policy
+![Group Policy Management](screenshots/01-group-policy-management.png)
 
-After the GPO is linked to the appropriate scope, force a policy update:
+## 1.3 Refresh the Policies
+
+After linking the GPO to the appropriate scope, refresh Group Policy using:
 
 ```powershell
 gpupdate /force
 ```
 
-The client is then restarted or the user session is refreshed so that Windows can process the software deployment.
+Restart or sign in to the client so Windows can process the software installation.
 
 ## 1.4 Validation
 
-On the client computer, **Google Chrome is installed automatically** without manually running the installer.
+On the client computer, verify that **Google Chrome is installed automatically** without manually running the installer.
+
+![Chrome deployment through GPO](screenshots/02-chrome-gpo.png)
 
 ---
 
-# 2. Restricting Control Panel, CMD, and Regedit
+# 2. Restrict Control Panel, CMD, and Regedit
 
-The second part of the lab restricts access to several administrative tools.
+The second part of the laboratory restricts access to selected administrative tools.
 
 A new GPO named:
 
@@ -143,9 +158,19 @@ bloqueo administrativo cmd edit
 
 is created.
 
-## 2.1 Blocking Control Panel
+## 2.1 Configure the Restrictions
 
-The policy is configured under:
+The settings are configured under:
+
+```text
+User Configuration
+└── Policies
+    └── Administrative Templates
+```
+
+### Control Panel
+
+Navigate to:
 
 ```text
 User Configuration
@@ -154,11 +179,11 @@ User Configuration
         └── Control Panel
 ```
 
-The corresponding policy is enabled to prevent users from accessing Control Panel.
+Enable the appropriate policy to prevent access to Control Panel.
 
-## 2.2 Blocking CMD
+### CMD
 
-The Command Prompt restriction is configured under:
+Configure the Command Prompt restriction under:
 
 ```text
 User Configuration
@@ -167,33 +192,43 @@ User Configuration
         └── System
 ```
 
-The policy preventing access to the Command Prompt is enabled.
+Enable the policy that prevents access to the **Command Prompt**.
 
-## 2.3 Blocking Regedit
+### Regedit
 
-A policy is also configured to prevent users from accessing **Registry Editor**.
+Configure the appropriate administrative policy to prevent access to Registry editing tools.
 
-This reduces the ability of standard users to directly modify sensitive Windows configuration settings.
+These restrictions are managed through the same GPO.
 
-## 2.4 Validation
+![Administrative restriction GPO](screenshots/04-restriction-gpo.png)
 
-The client is updated with:
+## 2.2 Apply the Policies
+
+On the client, refresh Group Policy:
 
 ```powershell
 gpupdate /force
 ```
 
-The following restrictions are then tested:
+Then verify each restriction.
 
-* Control Panel.
-* Command Prompt.
-* Registry Editor.
+### Control Panel blocked
 
-The system displays a message indicating that the requested action has been restricted by the administrator.
+![Control Panel blocked](screenshots/05-control-panel-blocked.png)
+
+### CMD blocked
+
+![CMD blocked](screenshots/06-cmd-blocked.png)
+
+### Regedit blocked
+
+![Regedit blocked](screenshots/07-regedit-blocked.png)
+
+The system should prevent access to these tools according to the configured Group Policy.
 
 ---
 
-# 3. Time Synchronization through the Domain Controller
+# 3. Configure Time Synchronization through the Domain Controller
 
 The third configuration uses a GPO named:
 
@@ -203,7 +238,7 @@ NTP
 
 The objective is to configure domain clients to use the Domain Controller as their time reference.
 
-The policy is configured under:
+The configuration is performed under:
 
 ```text
 Computer Configuration
@@ -214,21 +249,25 @@ Computer Configuration
                 └── Time Providers
 ```
 
-The required Windows Time Service policies are enabled to configure time synchronization on the clients.
+The required Windows Time Service policies are enabled for the client computers.
 
-Time synchronization is particularly important in an Active Directory environment because Kerberos authentication and other domain mechanisms depend on accurate system time.
+![NTP Group Policy](screenshots/08-ntp-gpo.png)
+
+Time synchronization is particularly important in Active Directory environments because domain authentication mechanisms depend on appropriate time synchronization.
 
 ---
 
-# 4. Security Auditing
+# 4. Configure Security Auditing
 
-The final part of the laboratory uses a GPO named:
+For the final section, a GPO named:
 
 ```text
 auditorías de seguridad
 ```
 
-The policy is configured under:
+is created.
+
+The configuration is performed under:
 
 ```text
 Computer Configuration
@@ -243,46 +282,43 @@ The required auditing policies are enabled to record relevant security events.
 
 ## 4.1 Logon Auditing
 
-Logon auditing is configured to record both successful and failed authentication attempts.
+Configure **Logon** auditing to record both successful and failed authentication attempts.
 
-This allows administrators to identify valid and unsuccessful login attempts.
+This allows successful and unsuccessful login attempts to be identified.
 
 ## 4.2 Process Tracking
 
-Auditing related to **Process Tracking** is enabled to record events associated with process creation and execution.
-
-This information can later be used as a source of evidence during security investigations.
+Enable auditing related to **Process Tracking** to record events associated with process creation and execution.
 
 ## 4.3 System Events
 
-Policies related to **System Events** are also enabled to record specific operating system events.
+Enable policies related to **System Events** to record selected operating system events.
+
+The audit configuration is managed through the dedicated GPO.
+
+![Audit GPO](screenshots/03-audit-gpo.png)
 
 ---
 
-# 5. Validation through Event Viewer
+# 5. Validate through Event Viewer
 
-The auditing configuration is validated using:
+To verify that auditing is working, open:
 
 ```text
 Event Viewer
 ```
 
-Previous security logs are cleared in order to make newly generated events easier to identify.
+Successful and failed login attempts are generated during testing and the resulting security events are reviewed.
 
-The following actions are then performed on the client:
+![Security events in Event Viewer](screenshots/09-event-viewer.png)
 
-1. Attempt to log in using an incorrect password.
-2. Perform a successful login.
-3. Refresh the security logs.
-4. Review the newly generated events.
-
-This confirms that authentication attempts generate the expected entries in the Security event log.
+The presence of the expected events confirms that the audit policies are being processed.
 
 ---
 
-# 6. GPO Validation
+# 6. Validate Applied GPOs
 
-In addition to visual verification, Group Policy can be validated from the client with:
+The applied policies can also be verified from the client using:
 
 ```powershell
 gpupdate /force
@@ -294,19 +330,21 @@ and:
 gpresult /r
 ```
 
-`gpupdate` forces the client to refresh its policies, while `gpresult` can be used to verify which policies were applied to the computer or user.
+`gpupdate` forces a Group Policy refresh, while `gpresult` displays the policies applied to the computer and user.
+
+![Applied Group Policies](screenshots/10-gpresult.png)
 
 ---
 
 # 7. Result
 
-At the end of the laboratory, the domain environment contains several centralized policies:
+At the end of the laboratory, the domain environment contains several centrally managed policies:
 
 ```text
 Domain Controller
 │
 ├── Chrome installer
-│      └── Automatic Chrome deployment
+│      └── Automatic Chrome installation
 │
 ├── bloqueo administrativo cmd edit
 │      ├── Control Panel restriction
@@ -322,51 +360,39 @@ Domain Controller
        └── System Events
 ```
 
-The policies were applied and validated on the client, including the restrictions and the generation of security audit events.
+The policies were applied and validated from the client computer, including the restriction tests and security event generation.
 
 ---
 
-# Evidence
-
-Screenshots for this laboratory are stored in:
-
-```text
-screenshots/
-```
-
-The evidence includes GPO configuration, policy application, and client-side validation.
-
 ## Video
 
-**Lab demonstration:**
-[Watch the video on YouTube](https://www.youtube.com/watch?v=hRDxHtdWJE8)
+[Watch the laboratory demonstration on YouTube](https://www.youtube.com/watch?v=hRDxHtdWJE8)
 
 ---
 
 ## What I Learned
 
-This laboratory provided hands-on experience with **Group Policy** as a centralized administration mechanism for Windows systems within a domain environment.
+This laboratory provided hands-on experience with **Group Policy** as a centralized management mechanism for Windows computers in a domain environment.
 
-The lab covered software deployment, access restrictions, Windows Time Service configuration, and security event auditing.
+The practice covered GPO creation and linking, software deployment, access restrictions, Windows Time Service configuration, and security event auditing.
 
-It also demonstrated the complete policy lifecycle:
+It also demonstrated the complete Group Policy workflow:
 
 ```text
 Create GPO
    ↓
-Configure policy
+Configure Policy
    ↓
 Link GPO
    ↓
-Update policies
+Refresh Policies
    ↓
-Validate on client
+Validate on Client
    ↓
-Verify results
+Verify Results
 ```
 
 ---
-
 
 ## 👨‍💻 Author
 
