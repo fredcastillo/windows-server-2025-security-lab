@@ -46,7 +46,7 @@ También se realiza una prueba de aprobación y distribución de una actualizaci
 
 ## Arquitectura
 
-![Arquitectura del laboratorio](diagrams/diagram.jpg)
+![Arquitectura del laboratorio](diagrams/diagram.png)
 
 ```text
                          Windows Server 2025
