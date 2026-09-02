@@ -15,7 +15,7 @@
   <a href="https://www.youtube.com/watch?v=hRDxHtdWJE8"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
 </p>
 
-## Descripcion
+## Descripción
 
 Implementación y aplicación de **Group Policy Objects (GPOs)** en un entorno de dominio basado en **Windows Server 2025**, como parte del laboratorio de Seguridad de Sistemas Operativos.
 
@@ -66,12 +66,12 @@ Las políticas se administran de forma centralizada desde el Domain Controller y
 
 ## Directivas implementadas
 
-| GPO | Objetivo |
-|---|---|
-| Chrome installer | Distribución automática de Google Chrome |
+| GPO                             | Objetivo                                    |
+| ------------------------------- | ------------------------------------------- |
+| Chrome installer                | Distribución automática de Google Chrome    |
 | bloqueo administrativo cmd edit | Restricción de herramientas administrativas |
-| NTP | Sincronización de tiempo |
-| auditorías de seguridad | Registro de eventos de seguridad |
+| NTP                             | Sincronización de tiempo                    |
+| auditorías de seguridad         | Registro de eventos de seguridad            |
 
 ---
 
@@ -85,7 +85,7 @@ Se utiliza una versión **Google Chrome Standalone Enterprise** en formato `.msi
 
 El instalador se coloca en una carpeta compartida del servidor para que los equipos cliente puedan acceder al paquete mediante la red.
 
-La ruta utilizada para la implementación debe ser una **ruta UNC**, por ejemplo:
+La implementación utiliza una ruta UNC, por ejemplo:
 
 ```text
 \\DC01\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
@@ -126,6 +126,8 @@ Assigned
 
 De esta forma, la instalación queda controlada por la política aplicada al equipo.
 
+![Group Policy Management](screenshots/01-group-policy-management.png)
+
 ## 1.3 Actualizar las políticas
 
 Una vez vinculada la GPO al ámbito correspondiente, se actualizan las políticas utilizando:
@@ -140,6 +142,8 @@ Después se reinicia o se vuelve a iniciar sesión en el equipo cliente para que
 
 En el equipo cliente se comprueba que **Google Chrome aparece instalado automáticamente**, sin necesidad de ejecutar manualmente el instalador.
 
+![Chrome deployment through GPO](screenshots/02-chrome-gpo.png)
+
 ---
 
 # 2. Restricción del Panel de Control, CMD y Regedit
@@ -152,9 +156,19 @@ Para ello se crea una nueva GPO denominada:
 bloqueo administrativo cmd edit
 ```
 
-## 2.1 Bloquear el Panel de Control
+## 2.1 Configurar las restricciones
 
 La configuración se realiza desde:
+
+```text
+User Configuration
+└── Policies
+    └── Administrative Templates
+```
+
+### Panel de Control
+
+La restricción se configura desde:
 
 ```text
 User Configuration
@@ -165,7 +179,7 @@ User Configuration
 
 Se habilita la política correspondiente para impedir el acceso al Panel de Control.
 
-## 2.2 Bloquear CMD
+### CMD
 
 La restricción del símbolo del sistema se configura desde:
 
@@ -178,13 +192,15 @@ User Configuration
 
 Se habilita la política para impedir el acceso al **Command Prompt**.
 
-## 2.3 Bloquear Regedit
+### Regedit
 
-Desde la misma sección de políticas administrativas se configura la restricción para impedir el acceso a las herramientas de edición del Registro.
+Desde las políticas administrativas correspondientes se configura la restricción para impedir el acceso a las herramientas de edición del Registro.
 
-El objetivo es evitar que los usuarios puedan modificar directamente configuraciones sensibles del sistema.
+La configuración de estas restricciones se gestiona desde la misma GPO.
 
-## 2.4 Validación
+![Administrative restriction GPO](screenshots/04-restriction-gpo.png)
+
+## 2.2 Aplicar las políticas
 
 En el equipo cliente se actualizan las políticas:
 
@@ -192,13 +208,21 @@ En el equipo cliente se actualizan las políticas:
 gpupdate /force
 ```
 
-Posteriormente se comprueba que el usuario no puede acceder a:
+Posteriormente se comprueba el comportamiento de cada restricción.
 
-* Panel de Control.
-* CMD.
-* Regedit.
+### Panel de Control bloqueado
 
-El sistema muestra un mensaje indicando que la acción ha sido restringida por el administrador.
+![Control Panel blocked](screenshots/05-control-panel-blocked.png)
+
+### CMD bloqueado
+
+![CMD blocked](screenshots/06-cmd-blocked.png)
+
+### Regedit bloqueado
+
+![Regedit blocked](screenshots/07-regedit-blocked.png)
+
+El sistema debe impedir el acceso a estas herramientas según la configuración de la GPO.
 
 ---
 
@@ -225,7 +249,9 @@ Computer Configuration
 
 Se habilitan las políticas necesarias para configurar el servicio de tiempo de Windows en los clientes.
 
-La sincronización de hora es especialmente importante en un entorno Active Directory porque Kerberos y otros mecanismos del dominio dependen de una correcta sincronización temporal.
+![NTP Group Policy](screenshots/08-ntp-gpo.png)
+
+La sincronización de hora es especialmente importante en un entorno Active Directory porque los mecanismos de autenticación del dominio dependen de una correcta sincronización temporal.
 
 ---
 
@@ -260,11 +286,13 @@ Esto permite identificar intentos de autenticación correctos e incorrectos.
 
 Se habilita la auditoría relacionada con **Process Tracking** para registrar eventos asociados con la creación y ejecución de procesos.
 
-Esto puede utilizarse posteriormente como fuente de información para análisis de seguridad.
-
 ## 4.3 Eventos del sistema
 
 También se habilitan políticas relacionadas con **System Events** para registrar determinados eventos generados por el sistema operativo.
+
+La configuración de las políticas de auditoría se realiza mediante la GPO correspondiente.
+
+![Audit GPO](screenshots/03-audit-gpo.png)
 
 ---
 
@@ -276,16 +304,13 @@ Para comprobar que las auditorías están funcionando se utiliza:
 Event Viewer
 ```
 
-En el laboratorio se limpian previamente los registros de seguridad para facilitar la identificación de los nuevos eventos generados durante la prueba.
+En el laboratorio se revisan los nuevos eventos generados durante las pruebas.
 
-Posteriormente, desde el equipo cliente:
+Se realizan intentos de inicio de sesión correctos e incorrectos y posteriormente se revisan los registros de seguridad.
 
-1. Se intenta iniciar sesión utilizando una contraseña incorrecta.
-2. Se realiza un inicio de sesión correcto.
-3. Se actualizan los registros de seguridad.
-4. Se revisan los nuevos eventos registrados.
+![Security events in Event Viewer](screenshots/09-event-viewer.png)
 
-Esto permite comprobar que los intentos de autenticación generan eventos correspondientes en el registro de seguridad.
+La presencia de los eventos correspondientes permite comprobar que las políticas de auditoría están siendo procesadas.
 
 ---
 
@@ -303,7 +328,9 @@ y:
 gpresult /r
 ```
 
-`gpupdate` fuerza la actualización de las directivas, mientras que `gpresult` permite comprobar las políticas que han sido aplicadas al equipo o usuario.
+`gpupdate` fuerza la actualización de las directivas, mientras que `gpresult` permite comprobar las políticas aplicadas al equipo y al usuario.
+
+![Applied Group Policies](screenshots/10-gpresult.png)
 
 ---
 
@@ -335,20 +362,9 @@ Las políticas fueron aplicadas y verificadas desde el equipo cliente, incluyend
 
 ---
 
-# Evidencia
-
-Las capturas correspondientes a esta práctica se almacenan en:
-
-```text
-screenshots/
-```
-
-La evidencia incluye la configuración de las GPO, la aplicación de políticas y la validación desde el equipo cliente.
-
 ## Video
 
-**Demostración de la práctica:**
-[Ver video en YouTube](https://www.youtube.com/watch?v=hRDxHtdWJE8)
+[Ver demostración de la práctica en YouTube](https://www.youtube.com/watch?v=hRDxHtdWJE8)
 
 ---
 
