@@ -15,25 +15,25 @@
 
 ## Description
 
-Hands-on laboratory covering **SSH public-key authentication** and **Public Key Infrastructure (PKI)** in a Windows Server 2025 environment.
+Hands-on laboratory covering **SSH public key authentication** and the implementation of a **Public Key Infrastructure (PKI)** using Windows Server 2025.
 
 The laboratory is divided into two parts:
 
-1. Configuring an Ubuntu Server to use SSH public-key authentication with a custom port.
-2. Deploying a Certificate Authority on Windows Server 2025, creating a custom certificate template, issuing a certificate to a client, and associating the certificate with the RDP service.
+1. Configuration of an Ubuntu server to use SSH public key authentication on a custom port.
+2. Implementation of a Certification Authority on Windows Server 2025, creation of a certificate template, issuance of a certificate to a client computer, and association of the certificate with the RDP service.
 
 ## Objectives
 
 * Change the SSH listening port.
 * Generate an SSH key pair.
-* Configure public-key authentication.
+* Configure public key authentication.
 * Validate an SSH connection without using the account password.
 * Install Active Directory Certificate Services.
-* Configure a Certificate Authority.
+* Configure a Certification Authority.
 * Create a custom certificate template.
 * Allow private key export.
-* Issue a certificate to a domain-joined client.
-* Export the certificate as a `.pfx` file.
+* Issue a certificate to a domain-joined computer.
+* Export the certificate as `.pfx`.
 * Associate the certificate with the RDP service.
 * Validate an RDP connection using the issued certificate.
 
@@ -55,6 +55,8 @@ The laboratory is divided into two parts:
 
 ## Architecture
 
+![Laboratory architecture](diagrams/diagram.png)
+
 ```text
                            Windows Server 2025
                            192.168.100.147
@@ -65,12 +67,13 @@ The laboratory is divided into two parts:
                     ▼                           ▼
              Active Directory            Certificate Authority
                                                 │
-                                                │ Issued certificate
+                                                │ Issuance
                                                 ▼
                                          Windows Client
                                          cliente roblex
                                                 │
                                                 │ RDP
+                                                │
                                                 ▼
                                       Remote Desktop
 
@@ -82,11 +85,11 @@ Client / SSH Key
   Ubuntu Server
 ```
 
-# Part 1 — SSH Public-Key Authentication
+## Part 1 — SSH Public Key Authentication
 
-## 1. Change the SSH port
+### 1. Change the SSH Port
 
-SSH uses port `22` by default.
+By default, SSH uses port `22`.
 
 This laboratory uses:
 
@@ -94,7 +97,9 @@ This laboratory uses:
 2275
 ```
 
-On the Ubuntu Server, open the OpenSSH configuration file:
+The configuration is performed on the Ubuntu server.
+
+First, open the OpenSSH configuration file:
 
 ```bash
 sudo nano /etc/ssh/sshd_config
@@ -112,50 +117,65 @@ and change it to:
 Port 2275
 ```
 
-Save the file and restart SSH:
+Save the changes and restart the service:
 
 ```bash
 sudo systemctl restart ssh
 ```
 
-Verify that the service is listening:
+Verify that the service is listening on the new port:
 
 ```bash
 sudo ss -tuln | grep 2275
 ```
 
-The output should show port `2275` in a `LISTEN` state.
+![SSH port configuration](screenshots/01-ssh-port.png)
 
-## 2. Generate an SSH key pair
+The output should show port `2275` in the `LISTEN` state.
 
-On the client, generate a new key pair:
+### 2. Generate the SSH Key Pair
+
+From the computer that will connect to the server, generate a new key pair:
 
 ```bash
 ssh-keygen
 ```
 
-The process creates:
+During the process, you will be prompted for:
+
+* a location to save the key;
+* an optional passphrase for protecting the private key.
+
+The process generates:
 
 ```text
 Private key
 Public key
 ```
 
-The private key must remain protected on the client and must never be committed to the repository.
+The private key must remain only on the client computer.
 
-## 3. Configure `authorized_keys`
+![SSH key pair generation](screenshots/02-ssh-key-generation.png)
 
-Display the public key:
+### 3. Copy the Public Key to the Server
+
+First, identify the contents of the public key.
+
+On Linux, for example:
 
 ```bash
 cat ~/.ssh/id_rsa.pub
 ```
 
-Copy the public key to the Ubuntu Server and add it to:
+On Windows, the location depends on the key type that was generated.
+
+The public key must be added to:
 
 ```text
 ~/.ssh/authorized_keys
 ```
+
+on the Ubuntu server.
 
 If the `.ssh` directory does not exist:
 
@@ -164,7 +184,7 @@ mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 ```
 
-Create or edit:
+Then create or edit:
 
 ```bash
 nano ~/.ssh/authorized_keys
@@ -172,23 +192,25 @@ nano ~/.ssh/authorized_keys
 
 Paste the public key and save the file.
 
-Set the recommended permissions:
+Set the correct permissions:
 
 ```bash
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-## 4. Test SSH authentication
+### 4. Test Authentication
 
-From the client:
+From the client, connect using the custom port:
 
 ```bash
 ssh -p 2275 user@SERVER_IP
 ```
 
-If the configuration is correct, the server will authenticate the user using the public key.
+If the configuration is correct, the server will allow authentication using the public key.
 
-Authentication flow:
+![SSH public key authentication](screenshots/03-ssh-authentication.png)
+
+The authentication flow is:
 
 ```text
 Client
@@ -197,7 +219,7 @@ Client
    ▼
 Ubuntu Server :2275
    │
-   │ Check authorized public key
+   │ Looks for authorized public key
    ▼
 ~/.ssh/authorized_keys
    │
@@ -205,11 +227,11 @@ Ubuntu Server :2275
 SSH Access
 ```
 
-> Never publish the private key.
+> Never upload the private key to the repository.
 
 ---
 
-# Part 2 — Windows PKI Implementation
+# Part 2 — PKI Implementation
 
 ## 5. Install Active Directory Certificate Services
 
@@ -226,7 +248,7 @@ Manage
 └── Add Roles and Features
 ```
 
-Use a role-based installation.
+Use a role-based or feature-based installation.
 
 Select:
 
@@ -234,21 +256,23 @@ Select:
 Active Directory Certificate Services
 ```
 
-Under role services, select:
+Under Role Services, select:
 
 ```text
 Certification Authority
 ```
 
-Complete the installation and continue with the post-installation configuration.
+Complete the installation and configure the service.
 
-**SHA-256** was selected as the hash algorithm during the laboratory configuration.
+During the configuration, the laboratory Certification Authority is established. **SHA-256** was used as the hashing algorithm in this laboratory.
 
-The CA is now ready to issue certificates.
+![Active Directory Certificate Services installation](screenshots/04-ad-cs-installation.png)
 
-## 6. Create a custom certificate template
+Once configuration is complete, the CA is ready to issue certificates.
 
-Windows Server provides predefined certificate templates.
+## 6. Create a Custom Certificate Template
+
+Windows Server includes predefined certificate templates for different purposes.
 
 To create a custom template:
 
@@ -266,9 +290,11 @@ Web Server
 Certificado exportable
 ```
 
-### Allow private key export
+![Certificate template creation](screenshots/05-certificate-template.png)
 
-Open the template properties and go to:
+### Allow Private Key Export
+
+Open the properties of the new template and go to:
 
 ```text
 Request Handling
@@ -280,11 +306,11 @@ Enable:
 Allow private key to be exported
 ```
 
-This allows the certificate and its private key to be exported as a `.pfx` file.
+This allows the certificate to later be exported together with its private key.
 
-### Configure enrollment permissions
+### Configure Enrollment Permissions
 
-Under the security settings, select:
+In the Security tab, add or select:
 
 ```text
 Authenticated Users
@@ -296,11 +322,11 @@ and grant:
 Enroll
 ```
 
-This allows authenticated users to request certificates using the template.
+![Certificate template permissions](screenshots/06-certificate-template-permissions.png)
 
-## 7. Publish the template on the CA
+## 7. Publish the Template on the CA
 
-Creating a template does not automatically make it available for certificate enrollment.
+Creating a template does not automatically make it available for certificate requests.
 
 From the Certification Authority console:
 
@@ -309,19 +335,19 @@ Certification Authority
 └── Certificate Templates
 ```
 
-select the option to issue a new certificate template and publish:
+select the option to issue a new certificate template and add:
 
 ```text
 Certificado exportable
 ```
 
-The template is now available for enrollment.
+The template is now available for certificate enrollment.
 
 ---
 
 # Part 3 — Request the Certificate from the Client
 
-## 8. Open the certificate store
+## 8. Open the Certificate Store
 
 On the domain-joined Windows client, open:
 
@@ -329,16 +355,16 @@ On the domain-joined Windows client, open:
 certlm.msc
 ```
 
-Navigate to:
+Go to:
 
 ```text
 Personal
 └── Certificates
 ```
 
-Start a new certificate request.
+Right-click and select the options to request a new certificate.
 
-## 9. Select the certificate template
+## 9. Select the Certificate Template
 
 Select:
 
@@ -346,9 +372,9 @@ Select:
 Certificado exportable
 ```
 
-Complete the additional certificate information required by the request.
+Complete the additional information required by the certificate request.
 
-The laboratory uses:
+In the demonstration, the name was configured using:
 
 ```text
 Common Name
@@ -360,18 +386,20 @@ with:
 cliente roblex
 ```
 
-Complete the request and verify that the certificate appears under:
+Complete the enrollment process and verify that the certificate appears under:
 
 ```text
 Personal
 └── Certificates
 ```
 
+![Issued certificate](screenshots/07-certificate.png)
+
 ---
 
 # Part 4 — Export the Certificate
 
-## 10. Export the certificate and private key
+## 10. Export the Certificate and Private Key
 
 From:
 
@@ -388,62 +416,62 @@ All Tasks
 └── Export
 ```
 
-In the export wizard:
+In the wizard:
 
-1. Choose the option to export the private key.
-2. Select an appropriate format for a certificate that includes the private key.
+1. Select the option to **export the private key**.
+2. Keep a format that supports certificates with private keys.
 3. Set a password to protect the exported file.
-4. Save it as:
+4. Save the certificate as:
 
 ```text
 .pfx
 ```
 
-The `.pfx` file contains both the certificate and private key.
+The `.pfx` file contains the certificate and its private key.
 
-> **Do not commit the `.pfx` file to GitHub.** Do not publish its password.
+> **Do not upload the `.pfx` file to GitHub.** Do not publish the password used to protect it.
 
 ---
 
 # Part 5 — Associate the Certificate with RDP
 
-## 11. Retrieve the certificate thumbprint
+## 11. Obtain the Certificate Thumbprint
 
-Open an elevated PowerShell session and query the local certificate store:
+Open PowerShell as Administrator and inspect the certificate store:
 
 ```powershell
 Get-ChildItem Cert:\LocalMachine\My
 ```
 
-Identify the certificate issued for the client and copy its:
+Identify the certificate issued to the client and copy its:
 
 ```text
 Thumbprint
 ```
 
-The thumbprint identifies the specific certificate that will be used by the service.
+The thumbprint identifies the specific certificate to be used by the service.
 
-## 12. Associate the certificate with RDP
+## 12. Associate the Certificate with RDP
 
-Use the certificate thumbprint to associate the selected certificate with the Remote Desktop / Terminal Services service.
+The certificate identified by its thumbprint is associated with the Remote Desktop service using the Windows management tools.
 
-The intended relationship is:
+The intended configuration is:
 
 ```text
 RDP
  │
- └── Certificate issued by the lab CA
+ └── Certificate issued by the CA
 ```
 
-Before applying the configuration, make sure the thumbprint corresponds to the correct certificate.
+Before applying the association, verify that the thumbprint corresponds to the correct certificate.
 
 ---
 
 # Part 6 — Enable Remote Desktop
 
-## 13. Enable RDP on the client
+## 13. Enable RDP on the Client
 
-On the Windows client:
+On the client computer:
 
 ```text
 Settings
@@ -453,87 +481,65 @@ Settings
 
 Enable **Remote Desktop**.
 
-Make sure the account being used has permission to connect through RDP.
+Make sure the account being used for the connection has permission to access the system through RDP.
 
 ---
 
 # Part 7 — Validate the Connection
 
-## 14. Connect using RDP
+## 14. Connect Using RDP
 
-From Windows Server 2025, launch:
+From Windows Server 2025, open:
 
 ```text
 mstsc
 ```
 
-Enter:
+In the connection field enter:
 
 ```text
 cliente roblex
 ```
 
-Provide the required credentials and establish the connection.
+Enter the appropriate credentials and establish the connection.
 
-Once connected, inspect the connection security information.
+Once connected, open the connection security information.
 
-Verify that the certificate associated with the connection corresponds to the certificate issued by the laboratory Certificate Authority.
+Verify that the certificate associated with the connection corresponds to the certificate issued by the laboratory Certification Authority.
 
-The overall workflow is:
+The complete flow is:
 
 ```text
 Windows Server
        │
-       │ Trust / certificate infrastructure
+       │ Request / Trust
        ▼
 Certificate Authority
        │
-       │ Issues certificate
+       │ Certificate issuance
        ▼
 Windows Client
        │
-       │ Certificate assigned
+       │ Certificate associated
        ▼
       RDP
        │
        ▼
-Remote connection
+Remote Connection
 ```
 
 # Validation
 
-| Component   | Verification                        |
+| Component   | Validation                          |
 | ----------- | ----------------------------------- |
 | SSH         | Service listening on `2275`         |
-| SSH         | Public-key authentication           |
+| SSH         | Public key authentication           |
 | AD CS       | Certification Authority installed   |
 | Template    | `Certificado exportable` available  |
 | Certificate | Issued to client                    |
 | PFX         | Exported with private key           |
 | RDP         | Certificate associated with service |
-| Connection  | RDP validated from server           |
-
-# Evidence
-
-Screenshots for this laboratory should be stored in:
-
-```text
-screenshots/
-```
-
-Recommended evidence:
-
-```text
-01-ssh-port.png
-02-ssh-key-generation.png
-03-ssh-key-authentication.png
-04-ad-cs-installation.png
-05-certificate-template.png
-06-certificate-enrollment.png
-07-certificate-export.png
-08-rdp-certificate.png
-09-rdp-validation.png
-```
+| Connection  | RDP validated from the server       |
 
 ## Video
 
@@ -541,17 +547,16 @@ Recommended evidence:
 
 ## Security
 
-Do not commit any of the following to the repository:
+The following must not be included in this repository:
 
 * private keys;
 * `.pfx` files;
 * passwords;
 * credentials;
 * complete SSH keys;
-* reusable cryptographic material.
+* any other reusable cryptographic material.
 
 ---
-
 
 ## 👨‍💻 Author
 
