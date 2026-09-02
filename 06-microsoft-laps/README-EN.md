@@ -127,7 +127,7 @@ Set-LapsADReadPasswordPermission `
     -AllowedPrincipals "IT Support"
 ```
 
-![LAPS Active Directory permissions](screenshots/01-ad-laps-permissions.png)
+![LAPS Active Directory permissions](screenshots/01-update-laps-schema-1.png)
 
 This establishes two different permission scopes:
 
