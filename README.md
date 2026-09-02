@@ -34,9 +34,8 @@ Este repositorio documenta las prácticas realizadas, incluyendo configuraciones
 | 03 | [WSUS](./03-wsus/)                                                                | Gestión de actualizaciones, GPO, equipos cliente                  |
 | 04 | [PKI y Acceso Remoto Seguro](./04-pki-and-secure-remote-access/)                  | CA, certificados, autenticación SSH mediante clave pública        |
 | 05 | [Evaluación de Vulnerabilidades](./05-vulnerability-assessment/)                  | Nessus, análisis de vulnerabilidades, gestión de riesgos          |
-| 06 | [Remediación de Vulnerabilidades](./06-vulnerability-remediation/)                | Remediación, validación, comparación de resultados                |
-| 07 | [Microsoft LAPS](./07-laps/)                                                      | Contraseñas de administrador local, expiración, control de acceso |
-| 08 | [Administración de Administradores Locales](./08-local-administrator-management/) | Cuentas locales, grupos de dominio, privilegios administrativos   |
+| 06 | [Microsoft LAPS](./06-laps/)                                                      | Contraseñas de administrador local, expiración, control de acceso |
+| 07 | [Administración de Administradores Locales](./07-local-administrator-management/) | Cuentas locales, grupos de dominio, privilegios administrativos   |
 
 ## Entorno
 
@@ -110,13 +109,10 @@ windows-server-security-lab/
 ├── 05-vulnerability-assessment/
 │   └── README.md
 │
-├── 06-vulnerability-remediation/
+├── 06-laps/
 │   └── README.md
 │
-├── 07-laps/
-│   └── README.md
-│
-└── 08-local-administrator-management/
+└── 07-local-administrator-management/
     └── README.md
 ```
 
