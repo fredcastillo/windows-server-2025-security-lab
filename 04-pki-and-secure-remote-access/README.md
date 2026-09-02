@@ -54,9 +54,11 @@ La práctica está dividida en dos partes:
 | Puerto SSH      | `2275`                                |
 
 ## Arquitectura
+---
 
 ![Arquitectura del laboratorio](diagrams/diagram.jpg)
 
+---
 ```text
                            Windows Server 2025
                            192.168.100.147
@@ -84,6 +86,7 @@ Client / SSH Key
         ▼
   Ubuntu Server
 ```
+---
 
 ## Parte 1 — SSH con autenticación por clave pública
 
