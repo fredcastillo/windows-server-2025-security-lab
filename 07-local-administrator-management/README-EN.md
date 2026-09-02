@@ -1,6 +1,15 @@
-# Local Administrator Management with Group Policy
-
 🇬🇧 **English** | 🇪🇸 [Español](README.md)
+
+<h1 align="center">Local Administrator Management with Group Policy</h1>
+
+<p align="center">
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows Server"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Technology-GPO-5E5E5E?style=for-the-badge" alt="GPO"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Rename%20Account-optimus-2D72D9?style=for-the-badge" alt="Rename to optimus"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Startup%20Script-PowerShell-4CAF50?style=for-the-badge&logo=powershell&logoColor=white" alt="PowerShell Script"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Local%20Group-IT%20Support%20added-FF6F00?style=for-the-badge" alt="IT Support added"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge" alt="Status"></a>
+</p>
 
 ## Objective
 
