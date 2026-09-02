@@ -13,7 +13,7 @@
   <a href="https://www.youtube.com/watch?v=UHC0T9EKoEw"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
 </p>
 
-## Descripcion
+## Descripción
 
 Laboratorio práctico sobre autenticación mediante **clave pública SSH** e implementación de una **Public Key Infrastructure (PKI)** en Windows Server 2025.
 
@@ -54,6 +54,8 @@ La práctica está dividida en dos partes:
 | Puerto SSH      | `2275`                                |
 
 ## Arquitectura
+
+![Arquitectura del laboratorio](diagrams/diagram.png)
 
 ```text
                            Windows Server 2025
@@ -127,6 +129,8 @@ Comprueba que el servicio está escuchando en el nuevo puerto:
 sudo ss -tuln | grep 2275
 ```
 
+![Configuración del puerto SSH](screenshots/01-ssh-port.png)
+
 El resultado debe mostrar el puerto `2275` en estado `LISTEN`.
 
 ### 2. Generar el par de claves SSH
@@ -150,6 +154,8 @@ Clave pública
 ```
 
 La clave privada debe permanecer únicamente en el equipo cliente.
+
+![Generación del par de claves SSH](screenshots/02-ssh-key-generation.png)
 
 ### 3. Copiar la clave pública al servidor
 
@@ -201,6 +207,8 @@ ssh -p 2275 usuario@IP_DEL_SERVIDOR
 ```
 
 Si la configuración es correcta, el servidor permitirá la autenticación mediante la clave pública.
+
+![Autenticación SSH mediante clave pública](screenshots/03-ssh-authentication.png)
 
 El flujo es:
 
@@ -258,6 +266,8 @@ Completa la instalación y ejecuta posteriormente la configuración del servicio
 
 Durante la configuración se establece la CA del laboratorio. En esta práctica se utilizó **SHA-256** como algoritmo de hash.
 
+![Instalación de Active Directory Certificate Services](screenshots/04-ad-cs-installation.png)
+
 Una vez finalizada la configuración, la infraestructura queda preparada para emitir certificados.
 
 ## 6. Crear una plantilla de certificado personalizada
@@ -279,6 +289,8 @@ Web Server
 ```text
 Certificado exportable
 ```
+
+![Creación de la plantilla de certificado](screenshots/05-certificate-template.png)
 
 ### Permitir exportación de la clave privada
 
@@ -310,7 +322,7 @@ y concede:
 Enroll
 ```
 
-Con esto, los usuarios autenticados podrán solicitar certificados utilizando la plantilla.
+![Permisos de la plantilla de certificado](screenshots/06-certificate-template-permissions.png)
 
 ## 7. Habilitar la plantilla en la CA
 
@@ -380,6 +392,8 @@ Completa el proceso y comprueba que el certificado aparezca dentro de:
 Personal
 └── Certificates
 ```
+
+![Certificado emitido al cliente](screenshots/07-certificate.png)
 
 ---
 
@@ -527,28 +541,6 @@ Conexión remota
 | RDP         | Certificado asociado al servicio    |
 | Conexión    | RDP validado desde el servidor      |
 
-# Evidencia
-
-Las capturas de la práctica deben almacenarse en:
-
-```text
-screenshots/
-```
-
-Se recomienda documentar al menos:
-
-```text
-01-ssh-port.png
-02-ssh-key-generation.png
-03-ssh-key-authentication.png
-04-ad-cs-installation.png
-05-certificate-template.png
-06-certificate-enrollment.png
-07-certificate-export.png
-08-rdp-certificate.png
-09-rdp-validation.png
-```
-
 ## Video
 
 [Ver demostración de la práctica en YouTube](https://www.youtube.com/watch?v=UHC0T9EKoEw)
@@ -566,7 +558,7 @@ No se deben incluir en este repositorio:
 
 ---
 
-#### 👨‍💻 Autor
+## 👨‍💻 Autor
 
 **Fred Castillo**  
 *Estudiante de Tecnólogo en Seguridad Informática*  
@@ -575,4 +567,3 @@ No se deben incluir en este repositorio:
 [![GitHub](https://img.shields.io/badge/GitHub-fredcastillo-100000?style=for-the-badge&logo=github)](https://github.com/fredcastillo)
 
 ---
-
