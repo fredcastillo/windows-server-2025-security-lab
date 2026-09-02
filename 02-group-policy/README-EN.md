@@ -368,7 +368,7 @@ Verify results
 ---
 
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Fred Castillo**  
 *Information Security Technology Student*
