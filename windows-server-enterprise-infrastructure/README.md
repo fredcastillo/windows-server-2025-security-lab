@@ -1,4 +1,16 @@
-# Windows Server Enterprise Infrastructure
+<h1 align="center">Infraestructura Empresarial Windows Server</h1>
+
+<p align="center">
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Windows%20Server-2025-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows Server"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Servicios%20Base-AD%20DS%20%7C%20DNS%20%7C%20DHCP-2D72D9?style=for-the-badge" alt="Servicios Base"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Administración-GPO%20%7C%20File%20Server%20%7C%20FSRM-5E5E5E?style=for-the-badge" alt="Administración"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Seguridad-Nessus%20%7C%20Políticas-9C27B0?style=for-the-badge" alt="Seguridad"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Nube-AWS%20EC2%20%7C%20SSH-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white" alt="Nube"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Virtualización-VMware-607078?style=for-the-badge&logo=vmware&logoColor=white" alt="Virtualización"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge" alt="Estado"></a>
+  <a href="https://www.youtube.com/watch?v=uRUL2Djjtlo"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
+</p>
+
 
 Infraestructura empresarial implementada sobre **Windows Server**, desarrollada como proyecto final de la asignatura **Seguridad de Sistemas Operativos**.
 
