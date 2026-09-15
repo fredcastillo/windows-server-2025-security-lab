@@ -11,6 +11,7 @@
   <a href="https://www.youtube.com/watch?v=uRUL2Djjtlo"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
 </p>
 
+---
 
 Infraestructura empresarial implementada sobre **Windows Server**, desarrollada como proyecto final de la asignatura **Seguridad de Sistemas Operativos**.
 
