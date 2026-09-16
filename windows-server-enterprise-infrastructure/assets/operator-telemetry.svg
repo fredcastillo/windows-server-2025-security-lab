@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360" role="img" aria-labelledby="title desc">
+  <title id="title">Fred Castillo security focus map</title>
+  <desc id="desc">Animated terminal-style focus map showing security engineering, infrastructure hardening, network security, and controlled offensive security labs.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#071511"/>
+    </linearGradient>
+    <linearGradient id="scanFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4feecf" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4feecf" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      text { font-family: "JetBrains Mono", "Cascadia Code", Consolas, monospace; }
+      .name { fill: #f0f6fc; font-size: 18px; font-weight: 700; }
+      .status { fill: #4feecf; font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+      .tools { fill: #8b949e; font-size: 11px; letter-spacing: .7px; }
+      .pulse { transform-box: fill-box; transform-origin: center; animation: pulse 1.15s ease-in-out 3; }
+      .scan { animation: scan 4.6s ease-out 1 both; }
+      @keyframes pulse { 0%, 100% { opacity: .55; transform: scale(.88); } 50% { opacity: 1; transform: scale(1.08); } }
+      @keyframes scan { from { transform: translateX(-740px); opacity: 0; } 12% { opacity: .8; } to { transform: translateX(740px); opacity: 0; } }
+      @media (max-width: 500px) {
+        .name { font-size: 20px; }
+        .status { font-size: 17px; }
+        .tools { font-size: 14px; }
+      }
+      @media (prefers-reduced-motion: reduce) { .pulse, .scan { animation: none; } }
+    </style>
+  </defs>
+
+  <rect x="1" y="1" width="758" height="358" rx="14" fill="url(#panel)" stroke="#30363d" stroke-width="2"/>
+  <rect x="1" y="1" width="758" height="46" rx="14" fill="#161b22"/>
+  <path d="M1 33V47H759V33" fill="#161b22"/>
+  <circle cx="24" cy="24" r="6" fill="#ff5f56"/>
+  <circle cx="44" cy="24" r="6" fill="#ffbd2e"/>
+  <circle cx="64" cy="24" r="6" fill="#27c93f"/>
+  <text x="88" y="30" fill="#8b949e" font-size="13">fred@security-lab:~/github$</text>
+  <text x="302" y="30" fill="#4feecf" font-size="13" font-weight="700">./focus --map</text>
+  <text x="726" y="30" fill="#4feecf" font-size="11" text-anchor="end">PROFILE MAP</text>
+
+  <g fill="#0d1117" stroke="#21262d" stroke-width="2">
+    <rect x="24" y="66" width="346" height="118" rx="10"/>
+    <rect x="390" y="66" width="346" height="118" rx="10"/>
+    <rect x="24" y="198" width="346" height="118" rx="10"/>
+    <rect x="390" y="198" width="346" height="118" rx="10"/>
+  </g>
+
+  <g transform="translate(86 125)">
+    <circle class="pulse" r="32" fill="none" stroke="#4feecf" stroke-width="3"/>
+    <path d="M-14 3L-5 12L16-14" fill="none" stroke="#4feecf" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text class="name" x="132" y="111">SECURITY ENGINEERING</text>
+  <text class="status" x="132" y="137">BUILDING</text>
+  <text class="tools" x="132" y="158">WAZUH / SIEM / VM</text>
+
+  <g transform="translate(452 125)">
+    <circle class="pulse" r="32" fill="none" stroke="#22d3ee" stroke-width="3" style="animation-delay:.25s"/>
+    <path d="M-16 8V-10L0-20L16-10V8L0 18Z" fill="none" stroke="#22d3ee" stroke-width="3"/>
+    <path d="M0-4V8M-7 2H7" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <text class="name" x="498" y="111">INFRASTRUCTURE</text>
+  <text class="status" x="498" y="137">HARDENING</text>
+  <text class="tools" x="498" y="158">WINDOWS / LINUX / PVE</text>
+
+  <g transform="translate(86 257)">
+    <circle class="pulse" r="32" fill="none" stroke="#8b5cf6" stroke-width="3" style="animation-delay:.5s"/>
+    <circle r="6" fill="#8b5cf6"/>
+    <circle r="18" fill="none" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+    <circle r="28" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4 8"/>
+  </g>
+  <text class="name" x="132" y="243">NETWORK SECURITY</text>
+  <text class="status" x="132" y="269">PRACTICE</text>
+  <text class="tools" x="132" y="290">CISCO / OSPF / IPSEC</text>
+
+  <g transform="translate(452 257)">
+    <circle class="pulse" r="32" fill="none" stroke="#f97316" stroke-width="3" style="animation-delay:.75s"/>
+    <circle r="17" fill="none" stroke="#f97316" stroke-width="3"/>
+    <path d="M0-27V-12M0 12V27M-27 0H-12M12 0H27" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>
+    <circle r="4" fill="#f97316"/>
+  </g>
+  <text class="name" x="498" y="243">OFFENSIVE LABS</text>
+  <text class="status" x="498" y="269">CONTROLLED</text>
+  <text class="tools" x="498" y="290">TEST / OBSERVE / REPORT</text>
+
+  <rect class="scan" x="720" y="52" width="40" height="274" fill="url(#scanFill)" filter="url(#glow)" opacity="0"/>
+  <text x="28" y="342" fill="#6e7681" font-size="11">BUILD / HARDEN / TEST / DOCUMENT</text>
+  <text x="732" y="342" fill="#6e7681" font-size="11" text-anchor="end">FREDCASTILLO // SECURITY FOCUS</text>
+</svg>
