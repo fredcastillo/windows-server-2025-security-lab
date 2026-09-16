@@ -1,4 +1,16 @@
-# Technical Documentation
+<h1 align="center">Technical Documentation</h1>
+
+<p align="center">
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Project-Windows%20Server%20Enterprise-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Project"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Docs-8%20Sections-2D72D9?style=for-the-badge" alt="Docs"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Troubleshooting-SMB%20%7C%20Explorer-9C27B0?style=for-the-badge" alt="Troubleshooting"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Vulnerability%20Assessment-Nessus-FF6F00?style=for-the-badge" alt="Nessus"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Cloud-AWS%20EC2%20%7C%20SSH-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white" alt="Cloud"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Evidence-Screenshots%20%26%20Diagrams-4CAF50?style=for-the-badge" alt="Evidence"></a>
+  <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Scripts-Reusable%20PowerShell-5E5E5E?style=for-the-badge&logo=powershell&logoColor=white" alt="Scripts"></a>
+</p>
+
+---
 
 This directory contains the technical documentation for the **Windows Server Enterprise Infrastructure** project.
 
