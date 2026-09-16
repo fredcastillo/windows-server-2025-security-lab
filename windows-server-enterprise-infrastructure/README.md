@@ -8,7 +8,7 @@
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Nube-AWS%20EC2%20%7C%20SSH-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white" alt="Nube"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Virtualización-VMware-607078?style=for-the-badge&logo=vmware&logoColor=white" alt="Virtualización"></a>
   <a href="https://github.com/fredcastillo/ADDS-Lab"><img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge" alt="Estado"></a>
-  <a href="https://www.youtube.com/watch?v=uRUL2Djjtlo"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video demostración"></a>
+  <a href="https://www.youtube.com/watch?v=uRUL2Djjtlo"><img src="https://img.shields.io/badge/Video%20demostración-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Demostración en Video"></a>
 </p>
 
 ---
