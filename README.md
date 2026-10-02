@@ -147,7 +147,7 @@ El repositorio continuará incorporando nuevas prácticas, configuraciones y doc
 
 ---
 
-#### 👨‍💻 Autor
+## 👨‍💻 Autor
 
 **Fred Castillo**  
 *Estudiante de Tecnólogo en Seguridad Informática*  
